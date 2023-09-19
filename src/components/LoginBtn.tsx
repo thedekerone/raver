@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@material-tailwind/react";
 import { useSession, signIn, signOut } from "next-auth/react";
 

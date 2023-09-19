@@ -8,11 +8,10 @@ import {
 
 export const eventsRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
-    const events = ctx.db.event.findMany();
-    return events;
+    return ctx.db.event.findMany({ include: { bgImage: true } });
   }),
 
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
+  getByID: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
+    return ctx.db.event.findFirst({ where: { id: input } });
   }),
 });
