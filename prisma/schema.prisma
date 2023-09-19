@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Organiser {
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String
+  email              String
+  website            String?
+  phoneNumber        String?
+  socialMediaLinks   Json?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
+  events             Event[] // Added opposite relation field
+
+  @@map("organisers")
+}
+
+model Event {
+  id                         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                      String
+  bgImage                   EventImages? @relation(fields: [bgImageId], references: [id])
+  bgImageId                String? @db.Uuid
+  description                String
+  startDate                 DateTime?   @default(now())
+  endDate                   DateTime?
+  onSaleDate               DateTime?
+  userIds                   String[]
+  currencyId                String?
+  salesVolume               Int?
+  organiserFeesVolume      Int?         @default(0)
+  organiserFeeFixed        Int?         @default(0)
+  organiserFeePercentage   Int?         @default(0)
+  organiser                  Organiser?    @relation(fields: [organiserId], references: [id])
+  organiserId               String? @db.Uuid
+  venueName                 String?
+  venueNameFull            String?
+  preOrderDisplayMessage  String?
+  postOrderDisplayMessage String?
+  socialShareText          String?
+  socialShowFacebook       String?
+  socialShowLinkedin       String?
+  socialShowTwitter        String?
+  socialShowEmail          String?
+  isLive                    Boolean      @default(false)
+  createdAt                 DateTime     @default(now())
+  updatedAt                 DateTime     @default(now())
+  deletedAt                 DateTime?
+  barcodeType               String?
+  googleTagManagerCode    String?
+  socialShowWhatsapp       Boolean?
+  checkoutTimeoutAfter     DateTime?
+  eventImagePosition       String?
+  location                   Location?    @relation(fields: [locationId], references: [id])
+  locationId                 String? @db.Uuid
+  ticket                     Ticket[]
+
+  @@map("events")
+}
+
+model EventImages {
+  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  imagePath String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  event      Event[]
+  eventId   String? @db.Uuid
+
+  @@map("event_images")
+}
+
+model Location {
+  id              String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String
+  address         String
+  addressLine1  String?
+  addressLine2  String?
+  country         String?
+  countryCode    String?
+  province        String?
+  city            String?
+  postCode       String?
+  streetNumber   String?
+  lat             String?
+  long            String?
+  googlePlaceId String?
+  isManual       Boolean?
+  events          Event[]
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now())
+
+  @@map("locations")
+}
+
+model Ticket {
+  id                    String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  event                 Event    @relation(fields: [eventId], references: [id])
+  eventId              String @db.Uuid
+  name                  String
+  price                 Float
+  quantity              Int
+  ticketBorderColor   String?
+  ticketBgColor       String?
+  ticketTextColor     String?
+  ticketSubTextColor String?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now())
+
+  @@map("tickets")
+}
