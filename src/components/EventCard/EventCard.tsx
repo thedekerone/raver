@@ -18,7 +18,13 @@ export default function EventCard({
 }: Props) {
   return (
     <Card className="relative">
-      <img alt={title} className="h-full w-full object-cover" src={imgSrc} />
+      <Image
+        width={350.8}
+        height={192}
+        alt={title}
+        className="h-full w-full object-cover"
+        src={imgSrc}
+      />
       <div className="absolute bottom-0 left-0 flex w-full items-center justify-between rounded-t-xl bg-white px-4 py-2">
         <div>
           <h3 className="text-sm">{title}</h3>
