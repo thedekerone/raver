@@ -11,6 +11,22 @@ export const eventsRouter = createTRPCRouter({
     return ctx.db.event.findMany({ include: { bgImage: true } });
   }),
 
+  create: protectedProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+        imagePath: z.string().optional(),
+        startDate: z.date().optional(),
+        endDate: z.date().optional(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.event.create({
+        data: input,
+      });
+    }),
+
   getByID: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     return ctx.db.event.findFirst({ where: { id: input } });
   }),

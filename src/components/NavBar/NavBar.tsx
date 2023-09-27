@@ -5,8 +5,9 @@ import ReactModal from "react-modal";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
 import Link from "next/link";
+import { LoginBtn } from "../LoginBtn";
 
-ReactModal.setAppElement("#__next");
+ReactModal.setAppElement("#modals");
 
 export default function NavBar() {
   const navUrls = [
@@ -38,6 +39,7 @@ export default function NavBar() {
           ))}
         </ul>
         <div className="flex items-center gap-6">
+          <LoginBtn></LoginBtn>
           <Button className="bg-myblack text-white">Buy Tickets</Button>
           <RiMenu5Line className="cursor-pointer" onClick={openModal} />
         </div>
@@ -56,19 +58,17 @@ export default function NavBar() {
       >
         <div className="flex h-8 w-full items-center justify-end pr-4">
           <RiMenu5Line
-            className={
-              clsx(
-                " cursor-pointer transition-all duration-500",
-                isModalOpen && " rotate-90 ",
-              ) as string
-            }
+            className={clsx(
+              " cursor-pointer transition-all duration-500",
+              isModalOpen && " rotate-90 ",
+            )}
             onClick={closeModal}
           />
         </div>
         <ul>
           {navUrls.map((url) => (
             <Link key={url.name} href={url.path}>
-              <li className="hover:bg-mygreen px-6 py-1" key={url.name}>
+              <li className="px-6 py-1 hover:bg-mygreen" key={url.name}>
                 {url.name}
               </li>
             </Link>

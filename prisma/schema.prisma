@@ -7,109 +7,137 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Organiser {
-  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name               String
-  email              String
-  website            String?
-  phoneNumber        String?
-  socialMediaLinks   Json?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @default(now())
-  events             Event[] // Added opposite relation field
-
-  @@map("organisers")
+enum UserType {
+  ORGANISER
+  ATTENDEE
 }
 
 model Event {
-  id                         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  title                      String
-  bgImage                   EventImages? @relation(fields: [bgImageId], references: [id])
-  bgImageId                String? @db.Uuid
-  description                String
-  startDate                 DateTime?   @default(now())
-  endDate                   DateTime?
-  onSaleDate               DateTime?
-  userIds                   String[]
-  currencyId                String?
-  salesVolume               Int?
-  organiserFeesVolume      Int?         @default(0)
-  organiserFeeFixed        Int?         @default(0)
-  organiserFeePercentage   Int?         @default(0)
-  organiser                  Organiser?    @relation(fields: [organiserId], references: [id])
-  organiserId               String? @db.Uuid
-  venueName                 String?
-  venueNameFull            String?
-  preOrderDisplayMessage  String?
-  postOrderDisplayMessage String?
-  socialShareText          String?
-  socialShowFacebook       String?
-  socialShowLinkedin       String?
-  socialShowTwitter        String?
-  socialShowEmail          String?
-  isLive                    Boolean      @default(false)
-  createdAt                 DateTime     @default(now())
-  updatedAt                 DateTime     @default(now())
-  deletedAt                 DateTime?
-  barcodeType               String?
-  googleTagManagerCode    String?
-  socialShowWhatsapp       Boolean?
-  checkoutTimeoutAfter     DateTime?
-  eventImagePosition       String?
-  location                   Location?    @relation(fields: [locationId], references: [id])
-  locationId                 String? @db.Uuid
-  ticket                     Ticket[]
-
-  @@map("events")
+  id          String     @id @default(cuid())
+  title       String
+  description String
+  organiser   User       @relation(fields: [organiserId], references: [id], name: "eventOrganiser")
+  organiserId String
+  attendees   User[]     @relation("eventAttendees")
+  Marketing   Marketing? @relation(fields: [marketingId], references: [id])
+  marketingId String?
+  location    Location?  @relation(fields: [locationId], references: [id])
+  locationId  String?
+  startDate   DateTime?  @default(now())
+  endDate     DateTime?
+  onSaleDate  DateTime?
+  timingId    String?
+  Ticket      Ticket[]
+  User        User[]
 }
 
-model EventImages {
-  id         String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+model Marketing {
+  id                   String   @id @default(cuid())
+  bgImageUrl           String?
+  socialShareText      String?
+  socialShowFacebook   String?
+  socialShowLinkedin   String?
+  socialShowTwitter    String?
+  socialShowEmail      String?
+  googleTagManagerCode String?
+  socialShowWhatsapp   Boolean?
+  event                Event[] // 1-1 relation with Event
+}
+
+model Image {
+  id        String   @id @default(cuid())
   imagePath String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  event      Event[]
-  eventId   String? @db.Uuid
-
-  @@map("event_images")
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
 }
 
 model Location {
-  id              String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name            String
-  address         String
+  id            String   @id @default(cuid())
+  name          String
+  address       String
   addressLine1  String?
   addressLine2  String?
-  country         String?
-  countryCode    String?
-  province        String?
-  city            String?
-  postCode       String?
-  streetNumber   String?
-  lat             String?
-  long            String?
+  country       String?
+  countryCode   String?
+  province      String?
+  city          String?
+  postCode      String?
+  streetNumber  String?
+  lat           String?
+  long          String?
   googlePlaceId String?
-  isManual       Boolean?
-  events          Event[]
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @default(now())
-
-  @@map("locations")
+  isManual      Boolean?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+  Event         Event[]
 }
 
 model Ticket {
-  id                    String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  event                 Event    @relation(fields: [eventId], references: [id])
-  eventId              String @db.Uuid
-  name                  String
-  price                 Float
-  quantity              Int
-  ticketBorderColor   String?
-  ticketBgColor       String?
-  ticketTextColor     String?
+  id                 String   @id @default(cuid())
+  event              Event    @relation(fields: [eventId], references: [id])
+  eventId            String
+  name               String
+  price              Float
+  quantity           Int
+  ticketBorderColor  String?
+  ticketBgColor      String?
+  ticketTextColor    String?
   ticketSubTextColor String?
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @default(now())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
+}
 
-  @@map("tickets")
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id              String    @id @default(cuid())
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  userType        UserType? @default(ATTENDEE)
+  imageCollection Image[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @default(now())
+  organisedEvents Event[]   @relation("eventOrganiser")
+  attendingEvents Event[]   @relation("eventAttendees")
+  event           Event?    @relation(fields: [eventId], references: [id])
+  eventId         String?
+  accounts        Account[]
+  image           String?
+  sessions        Session[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
