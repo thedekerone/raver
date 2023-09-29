@@ -13,7 +13,7 @@ export default function Home() {
 
   return (
     <>
-      <header className="from-skyblue via-mypurple to-mygreen relative mb-12 bg-gradient-to-r px-4 pb-12 pt-6 lg:h-[350px]">
+      <header className="relative mb-12 bg-gradient-to-r from-skyblue via-mypurple to-mygreen px-4 pb-12 pt-6 lg:h-[350px]">
         <NavBar />
         <SearchBar />
       </header>
@@ -25,7 +25,6 @@ export default function Home() {
               <EventCard
                 key={event.id}
                 title={event.title}
-                imgSrc={event?.bgImage?.imagePath}
                 date={
                   event.startDate && new Date(event.startDate).toDateString()
                 }

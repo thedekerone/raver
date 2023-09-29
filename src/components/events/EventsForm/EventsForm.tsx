@@ -10,7 +10,7 @@ type FormValues = {
   endDate: Date;
 };
 
-export function EventsForm() {
+export function EventsForm({ organiserId }: { organiserId: string }) {
   const createEvent = api.events.create.useMutation({
     onMutate(variables) {
       console.log(variables);
@@ -22,6 +22,7 @@ export function EventsForm() {
     createEvent.mutate({
       title: data.title,
       description: data.description,
+      organiserId,
     });
     try {
       console.log(data);

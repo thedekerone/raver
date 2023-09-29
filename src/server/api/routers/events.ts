@@ -8,7 +8,7 @@ import {
 
 export const eventsRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.db.event.findMany({ include: { bgImage: true } });
+    return ctx.db.event.findMany();
   }),
 
   create: protectedProcedure
@@ -16,9 +16,9 @@ export const eventsRouter = createTRPCRouter({
       z.object({
         title: z.string(),
         description: z.string(),
-        imagePath: z.string().optional(),
         startDate: z.date().optional(),
         endDate: z.date().optional(),
+        organiserId: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

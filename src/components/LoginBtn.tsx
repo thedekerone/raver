@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@material-tailwind/react";
 import { useSession, signIn, signOut } from "next-auth/react";
+import Button from "./UI/Button/Button";
 
 export function LoginBtn() {
   const { data: session } = useSession();
@@ -8,8 +8,10 @@ export function LoginBtn() {
   if (session) {
     return (
       <>
-        Signed in as {session.user.email} <br />
-        <Button className="" onClick={() => void signOut()}>
+        <Button
+          className="bg-myblack text-white"
+          onClick={() => void signOut()}
+        >
           Sign out
         </Button>
       </>
@@ -17,8 +19,7 @@ export function LoginBtn() {
   }
   return (
     <>
-      Not signed in <br />
-      <Button className="" onClick={() => void signIn()}>
+      <Button className="bg-myblack text-white" onClick={() => void signIn()}>
         Sign in
       </Button>
     </>
