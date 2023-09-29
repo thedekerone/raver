@@ -1,8 +1,16 @@
+import { Button } from "~/components/ui/button";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from "~/components/ui/navigation-menu";
 import { useSession } from "next-auth/react";
-import EventCard from "~/components/EventCard/EventCard";
-import NavBar from "~/components/NavBar/NavBar";
-import SearchBar from "~/components/SearchBar/SearchBar";
+
 import { api } from "~/utils/api";
+import Link from "next/link";
+import EventDisplayer from "~/components/EventDisplayer";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -10,29 +18,27 @@ export default function Home() {
   console.log(session);
 
   const events = api.events.getAll.useQuery().data;
-
+  console.log(events)
   return (
     <>
-      <header className="relative mb-12 bg-gradient-to-r from-skyblue via-mypurple to-mygreen px-4 pb-12 pt-6 lg:h-[350px]">
-        <NavBar />
-        <SearchBar />
-      </header>
-      <main className="px-4 font-bold">
-        <h2 className="mb-4">Most Popular Events</h2>
-        <section className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {events?.map((event) => {
-            return (
-              <EventCard
-                key={event.id}
-                title={event.title}
-                date={
-                  event.startDate && new Date(event.startDate).toDateString()
-                }
-              />
-            );
-          })}
-        </section>
-      </main>
+      <div className="container flex justify-between mx-auto p-4">
+        <h1>Raver</h1>
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <Link href='/events/create' legacyBehavior passHref>
+                <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                  create event
+
+                </NavigationMenuLink>
+              </Link>
+            </NavigationMenuItem>
+
+          </NavigationMenuList>
+        </NavigationMenu>
+
+      </div>
+      {events && <EventDisplayer events={events}></EventDisplayer>}
     </>
   );
 }
