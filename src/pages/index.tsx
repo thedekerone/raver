@@ -6,7 +6,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "~/components/ui/navigation-menu";
-import { useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
 import Link from "next/link";
@@ -32,6 +32,10 @@ export default function Home() {
 
                 </NavigationMenuLink>
               </Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              {session? <Button onClick={()=>signOut()}>Sign Out</Button>:  <Button onClick={()=>signIn()}>Sign In</Button>}
+             
             </NavigationMenuItem>
 
           </NavigationMenuList>
