@@ -7,7 +7,7 @@ export default function EventDisplayer({events}:{events: (Event & {organiser: Us
     <div className="container grid grid-cols-4 gap-4	">
     {events.map(eventItem=><div key={eventItem.id} className="container-sm">
       <div>
-        <Image width={200} height={100}  src={eventItem?.bgImageUrl || "https://media.traveler.es/photos/63aa3a712424e02f98a62399/16:9/w_2560%2Cc_limit/iStock-518820132.jpg"} alt="test" />
+        <img  src={eventItem?.bgImageUrl || "https://media.traveler.es/photos/63aa3a712424e02f98a62399/16:9/w_2560%2Cc_limit/iStock-518820132.jpg"} alt="test" />
       </div>
          <div>
          {eventItem.title}
