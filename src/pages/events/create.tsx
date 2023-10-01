@@ -17,7 +17,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
-import { api } from "~/utils/api";
+import { api } from "~/server/utils/api";
 import Router from "next/router";
 import CreateEventForm from "~/components/events/forms/CreateEventForm";
 

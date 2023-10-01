@@ -12,7 +12,7 @@ export const env = createEnv({
       .url()
       .refine(
         (str) => !str.includes("YOUR_MYSQL_URL_HERE"),
-        "You forgot to change the default URL"
+        "You forgot to change the default URL",
       ),
     NODE_ENV: z
       .enum(["development", "test", "production"])
@@ -26,11 +26,15 @@ export const env = createEnv({
       // Since NextAuth.js automatically uses the VERCEL_URL if present.
       (str) => process.env.VERCEL_URL ?? str,
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
-      process.env.VERCEL ? z.string().min(1) : z.string().url()
+      process.env.VERCEL ? z.string().min(1) : z.string().url(),
     ),
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     DISCORD_CLIENT_ID: z.string(),
     DISCORD_CLIENT_SECRET: z.string(),
+    AZURE_ACCOUNT_KEY: z.string(),
+    AZURE_ACCOUNT_NAME: z.string(),
+    AZURE_STORAGE_CONNECTION_STRING: z.string(),
+    AZURE_STORAGE_KEY: z.string(),
   },
 
   /**
@@ -41,6 +45,8 @@ export const env = createEnv({
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
   },
+
+
 
   /**
    * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
@@ -53,6 +59,11 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+    AZURE_ACCOUNT_NAME: process.env.AZURE_ACCOUNT_NAME,
+    AZURE_STORAGE_CONNECTION_STRING:
+      process.env.AZURE_STORAGE_CONNECTION_STRING,
+    AZURE_STORAGE_KEY: process.env.AZURE_STORAGE_KEY,
+    AZURE_ACCOUNT_KEY: process.env.AZURE_ACCOUNT_KEY
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

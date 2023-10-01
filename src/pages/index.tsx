@@ -8,7 +8,7 @@ import {
 } from "~/components/ui/navigation-menu";
 import { signIn, signOut, useSession } from "next-auth/react";
 
-import { api } from "~/utils/api";
+import { api } from "~/server/utils/api";
 import Link from "next/link";
 import EventDisplayer from "~/components/EventDisplayer";
 
@@ -18,6 +18,8 @@ export default function Home() {
   console.log(session);
 
   const events = api.events.getAll.useQuery().data;
+  const test = api.events.getSasUri.useQuery().data;
+  console.log(test)
   console.log(events)
   return (
     <>
