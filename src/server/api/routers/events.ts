@@ -25,11 +25,13 @@ export const eventsRouter = createTRPCRouter({
         startDate: z.date().optional(),
         endDate: z.date().optional(),
         organiserId: z.string(),
+        bgImageUrl: z.string()
       }),
     )
     .mutation(async ({ ctx, input }) => {
       await ctx.db.event.create({
         data: input,
+        
       });
     }),
 

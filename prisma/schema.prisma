@@ -28,12 +28,12 @@ model Event {
   onSaleDate  DateTime?
   timingId    String?
   Ticket      Ticket[]
+  bgImageUrl           String?
   User        User[]
 }
 
 model Marketing {
   id                   String   @id @default(cuid())
-  bgImageUrl           String?
   socialShareText      String?
   socialShowFacebook   String?
   socialShowLinkedin   String?
