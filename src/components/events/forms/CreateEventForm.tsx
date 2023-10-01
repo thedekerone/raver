@@ -2,7 +2,7 @@
 
 import { ContainerClient } from "@azure/storage-blob";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { type ChangeEvent, ChangeEventHandler } from "react";
+import React, { type ChangeEvent, ChangeEventHandler, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
@@ -28,6 +28,7 @@ const formSchema = z.object({
 });
 
 export default function CreateEventForm({ userId }: { userId: string }) {
+  const [imageUrl, setImageUrl] = useState('')
   const createEvent = api.events.create.useMutation({
     onError: (error) => {
       console.log(error);
@@ -36,7 +37,7 @@ export default function CreateEventForm({ userId }: { userId: string }) {
       console.log(data);
     },
   });
-  const [imageUrl, uploadFile] = useFileUpload();
+  const [ uploadFile] = useFileUpload();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,7 +52,8 @@ export default function CreateEventForm({ userId }: { userId: string }) {
       return;
     }
 
-    await uploadFile(event.target.files[0]);
+    const imageUrl = await uploadFile(event.target.files[0]);
+    setImageUrl(imageUrl)
   }
 
   function onSubmit(values: z.infer<typeof formSchema>) {

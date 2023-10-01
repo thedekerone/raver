@@ -4,9 +4,8 @@ import path from "path";
 import { useRef } from "react";
 import { api } from "~/server/utils/api";
 
-export function useFileUpload(): [string, (file: File) => Promise<string>] {
+export function useFileUpload(): [ (file: File) => Promise<string>] {
     const { data: session } = useSession();
-    const imageUrl = useRef("");
     const sasUri = api.events.getSasUri.useQuery().data;
     const createImage = api.images.create.useMutation();
     async function uploadFile(file: File) {
@@ -22,7 +21,6 @@ export function useFileUpload(): [string, (file: File) => Promise<string>] {
         );
 
         await blockBlobClient.uploadData(file, options);
-        imageUrl.current = blockBlobClient.url
         createImage.mutate({
             url: blockBlobClient.url,
             userId: session?.user.id,
@@ -31,5 +29,5 @@ export function useFileUpload(): [string, (file: File) => Promise<string>] {
         return blockBlobClient.url;
     }
 
-    return [imageUrl.current, uploadFile];
+    return [ uploadFile];
 }
