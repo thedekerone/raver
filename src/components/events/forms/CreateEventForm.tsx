@@ -16,7 +16,7 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { useFileUpload } from "~/hooks/useFileUpload";
+// import { useFileUpload } from "~/hooks/useFileUpload";
 import { api } from "~/server/utils/api";
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -37,7 +37,11 @@ export default function CreateEventForm({ userId }: { userId: string }) {
       console.log(data);
     },
   });
-  const [ uploadFile] = useFileUpload();
+
+  const sasUri = api.events.generateSasUrl.useQuery({fileName:"something.txt"}, {enabled})
+
+
+  // const [ uploadFile] = useFileUpload();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,8 +56,8 @@ export default function CreateEventForm({ userId }: { userId: string }) {
       return;
     }
 
-    const imageUrl = await uploadFile(event.target.files[0]);
-    setImageUrl(imageUrl)
+    // const imageUrl = await uploadFile(event.target.files[0]);
+    // setImageUrl(imageUrl)
   }
 
   function onSubmit(values: z.infer<typeof formSchema>) {

@@ -1,11 +1,7 @@
-import { type AccountSASSignatureValues, ContainerClient } from "@azure/storage-blob";
+import { type AccountSASSignatureValues, ContainerClient, BlobSASPermissions } from "@azure/storage-blob";
 
 import {
   BlobServiceClient,
-  generateAccountSASQueryParameters,
-  AccountSASPermissions,
-  AccountSASServices,
-  AccountSASResourceTypes,
   StorageSharedKeyCredential,
   SASProtocol,
 } from "@azure/storage-blob";
@@ -14,37 +10,39 @@ const accountName = process.env.AZURE_ACCOUNT_NAME;
 const accountKey = process.env.AZURE_ACCOUNT_KEY;
 const containerName = "events";
 
-function createAccountSas() {
+function getBlobServiceClient(serviceName:string, serviceKey:string) {
+  const sharedKeyCredential = new StorageSharedKeyCredential(
+    serviceName,
+    serviceKey
+  );
+  const blobServiceClient = new BlobServiceClient(
+    `https://${serviceName}.blob.core.windows.net`,
+    sharedKeyCredential
+  );
+
+  return blobServiceClient;
+}
+
+export async function generateSasUrl(fileName:string) {
   if (!accountName || !accountKey)
     throw new Error("Failed to initialize Azure storage");
 
-  const sharedKeyCredential = new StorageSharedKeyCredential(
-    accountName,
-    accountKey,
-  );
+  const blobServiceClient = getBlobServiceClient(accountName, accountKey)
+  const containerClient = blobServiceClient.getContainerClient(containerName)
 
-  const sasOptions:AccountSASSignatureValues = {
-    ipRange: {start: '89.27.127.154'},
-    services: AccountSASServices.parse("btfq").toString(),
-    resourceTypes: AccountSASResourceTypes.parse("sco").toString(),
-    permissions: AccountSASPermissions.parse("rwdlacupi"),
-    protocol: SASProtocol.HttpsAndHttp,
-    startsOn: new Date(),
-    expiresOn: new Date(new Date().valueOf() + 10 * 60 * 1000),
-  };
+  const blockBlobClient = containerClient.getBlockBlobClient(fileName)
 
-  const sasToken = generateAccountSASQueryParameters(
-    sasOptions,
-    sharedKeyCredential,
-  ).toString();
+  const SIXTY_MINUTES = 1 * 60 * 1000;
+  const NOW = new Date();
 
-  console.log(`sasToken = ${sasToken}`);
+  const accountSasTokenUrl = await blockBlobClient.generateSasUrl({
+    startsOn: NOW,
+    expiresOn: new Date(new Date().valueOf() + SIXTY_MINUTES),
+    permissions: BlobSASPermissions.parse("rw"), // Read only permission to the blob
+    protocol: SASProtocol.HttpsAndHttp // Only allow HTTPS access to the blob
+  });
 
-  return sasToken.startsWith("?") ? sasToken : `?${sasToken}`;
+  return accountSasTokenUrl;
+
 }
 
-export function getSasUri() {
-  const sasToken = createAccountSas();
-
-  return `https://${accountName}.blob.core.windows.net/${containerName}?${sasToken}`;
-}

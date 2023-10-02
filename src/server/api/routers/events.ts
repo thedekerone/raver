@@ -5,15 +5,17 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { getSasUri } from "~/server/utils/uploadToStorage";
+import { generateSasUrl } from "~/server/utils/uploadToStorage";
 
 export const eventsRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.db.event.findMany({include:{organiser:true}});
   }),
 
-  getSasUri: publicProcedure.query(()=>{
-    return getSasUri()
+  generateSasUrl: publicProcedure.input(z.object({
+    fileName: z.string(),
+  })).query(async ({input})=>{
+    return generateSasUrl(input.fileName)
   }),
 
 
