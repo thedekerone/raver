@@ -1,23 +1,27 @@
 import { z } from "zod";
+import { getPublicImageUrl } from "~/server/utils/uploadToStorage";
 
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { generateSasUrl } from "~/server/utils/uploadToStorage";
+import { generateUpdateSasUrl } from "~/server/utils/uploadToStorage";
 
 export const eventsRouter = createTRPCRouter({
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.db.event.findMany({include:{organiser:true}});
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.db.event.findMany( );
   }),
 
-  generateSasUrl: publicProcedure.input(z.object({
-    fileName: z.string(),
-  })).query(async ({input})=>{
-    return generateSasUrl(input.fileName)
-  }),
-
+  generateSasUrl: publicProcedure
+    .input(
+      z.object({
+        fileName: z.string(),
+      }),
+    )
+    .query(async ({ input }) => {
+      return generateUpdateSasUrl(input.fileName);
+    }),
 
   create: protectedProcedure
     .input(
@@ -27,13 +31,12 @@ export const eventsRouter = createTRPCRouter({
         startDate: z.date().optional(),
         endDate: z.date().optional(),
         organiserId: z.string(),
-        bgImageUrl: z.string()
+        bgImageUrl: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       await ctx.db.event.create({
-        data: input,
-        
+        data: {...input, bgImageUrl: getPublicImageUrl(input.bgImageUrl)},
       });
     }),
 

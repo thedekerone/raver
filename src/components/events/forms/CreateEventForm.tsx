@@ -1,8 +1,10 @@
 "use client";
 
-import { ContainerClient } from "@azure/storage-blob";
+import {
+  BlockBlobClient,
+} from "@azure/storage-blob";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { type ChangeEvent, ChangeEventHandler, useState } from "react";
+import React, { type ChangeEvent, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "~/components/ui/button";
@@ -16,8 +18,9 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-// import { useFileUpload } from "~/hooks/useFileUpload";
 import { api } from "~/server/utils/api";
+import { ReloadIcon } from "@radix-ui/react-icons"
+
 const formSchema = z.object({
   title: z.string().min(2, {
     message: "Title must be at least 2 characters.",
@@ -28,7 +31,9 @@ const formSchema = z.object({
 });
 
 export default function CreateEventForm({ userId }: { userId: string }) {
-  const [imageUrl, setImageUrl] = useState('')
+  const [uploadedFile, setUploadedFile] = useState<File | undefined>();
+  const [loading, setLoading] = useState(false);
+
   const createEvent = api.events.create.useMutation({
     onError: (error) => {
       console.log(error);
@@ -38,10 +43,15 @@ export default function CreateEventForm({ userId }: { userId: string }) {
     },
   });
 
-  const sasUri = api.events.generateSasUrl.useQuery({fileName:"something.txt"}, {enabled})
-
-
-  // const [ uploadFile] = useFileUpload();
+  const sasUri = api.events.generateSasUrl.useQuery(
+    { fileName: uploadedFile?.name ?? "" },
+    { enabled: !!uploadedFile?.name },
+  ).data;
+  const uploadImage = api.images.create.useMutation({
+    onMutate: (data) => {
+      console.log(data);
+    },
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,25 +61,36 @@ export default function CreateEventForm({ userId }: { userId: string }) {
     },
   });
 
-  async function onFileChange(event: ChangeEvent<HTMLInputElement>) {
+  function onFileChange(event: ChangeEvent<HTMLInputElement>) {
     if (!event?.target?.files?.[0]) {
       return;
     }
 
-    // const imageUrl = await uploadFile(event.target.files[0]);
-    // setImageUrl(imageUrl)
+    setUploadedFile(event.target.files[0]);
   }
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!sasUri || !uploadedFile) return;
+
+    setLoading(true)
+
     const { title, description } = values;
 
-    createEvent.mutate({
-      title,
-      description,
-      organiserId: userId,
-      bgImageUrl: imageUrl
+    await uploadFileFromBlob(sasUri, uploadedFile)
 
-    });
+    await createEvent.mutateAsync({ title, description, bgImageUrl: uploadedFile.name, organiserId: userId })
+
+    setLoading(false)
+
+  }
+
+  async function uploadFileFromBlob(sasUri: string, file: File) {
+
+    const blobService = new BlockBlobClient(sasUri);
+    const fileBuffer = await file.arrayBuffer();
+    await blobService.uploadData(fileBuffer);
+
+    uploadImage.mutate({ name: file.name, userId: userId });
   }
 
   return (
@@ -107,7 +128,10 @@ export default function CreateEventForm({ userId }: { userId: string }) {
           <Label htmlFor="picture">Picture</Label>
           <Input onChange={onFileChange} id="picture" type="file" />
         </div>
-        <Button type="submit">Submit</Button>
+        <Button disabled={loading} type="submit">
+          {loading ? <><ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> Creating</>
+            : 'Submit'}
+        </Button>
       </form>
     </Form>
   );

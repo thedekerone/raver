@@ -1,10 +1,11 @@
-import { type AccountSASSignatureValues, ContainerClient, BlobSASPermissions } from "@azure/storage-blob";
+import { type AccountSASSignatureValues, ContainerClient, BlobSASPermissions, ContainerSASPermissions, BlockBlobClient } from "@azure/storage-blob";
 
 import {
   BlobServiceClient,
   StorageSharedKeyCredential,
   SASProtocol,
 } from "@azure/storage-blob";
+import { type Image } from "@prisma/client";
 
 const accountName = process.env.AZURE_ACCOUNT_NAME;
 const accountKey = process.env.AZURE_ACCOUNT_KEY;
@@ -23,7 +24,7 @@ function getBlobServiceClient(serviceName:string, serviceKey:string) {
   return blobServiceClient;
 }
 
-export async function generateSasUrl(fileName:string) {
+export async function generateUpdateSasUrl(fileName:string) {
   if (!accountName || !accountKey)
     throw new Error("Failed to initialize Azure storage");
 
@@ -38,11 +39,23 @@ export async function generateSasUrl(fileName:string) {
   const accountSasTokenUrl = await blockBlobClient.generateSasUrl({
     startsOn: NOW,
     expiresOn: new Date(new Date().valueOf() + SIXTY_MINUTES),
-    permissions: BlobSASPermissions.parse("rw"), // Read only permission to the blob
-    protocol: SASProtocol.HttpsAndHttp // Only allow HTTPS access to the blob
+    permissions: BlobSASPermissions.parse("w"),
+    protocol: SASProtocol.HttpsAndHttp 
   });
 
   return accountSasTokenUrl;
 
 }
 
+export function getPublicImageUrl(name: string){
+  if (!accountName || !accountKey)
+    throw new Error("Failed to initialize Azure storage");
+
+  const blobServiceClient = getBlobServiceClient(accountName,accountKey)
+
+  const containerClient = blobServiceClient.getContainerClient(containerName)
+
+
+  return  containerClient.getBlockBlobClient(name).url
+
+}

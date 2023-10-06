@@ -11,6 +11,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { api } from "~/server/utils/api";
 import Link from "next/link";
 import EventDisplayer from "~/components/EventDisplayer";
+import Image from "next/image";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -18,13 +19,11 @@ export default function Home() {
   console.log(session);
 
   const events = api.events.getAll.useQuery().data;
-  const test = api.events.getSasUri.useQuery().data;
-  console.log(test)
   console.log(events)
   return (
     <>
       <div className="container flex justify-between mx-auto p-4">
-        <h1>Raver</h1>
+        <div className="flex justify-between items-center"><Image width="50" height="50" src="/document.svg" alt="logo" /> <span className="font-bold">Raver</span> </div>
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
@@ -36,8 +35,8 @@ export default function Home() {
               </Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              {session? <Button onClick={()=>signOut()}>Sign Out</Button>:  <Button onClick={()=>signIn()}>Sign In</Button>}
-             
+              {session ? <Button onClick={() => signOut()}>Sign Out</Button> : <Button onClick={() => signIn()}>Sign In</Button>}
+
             </NavigationMenuItem>
 
           </NavigationMenuList>
