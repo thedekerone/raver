@@ -42,7 +42,7 @@ export default function CreateEventForm({ userId }: { userId: string }) {
         description: error.message,
       })
     },
-    onMutate: (data) => {
+    onMutate: () => {
       toast({
         description: "Event created successfully",
       })

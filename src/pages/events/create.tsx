@@ -1,24 +1,7 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
-import React, { useRef } from "react";
+import React from "react";
 import { getServerAuthSession } from "~/server/auth";
 import { type GetServerSideProps } from "next";
 import { useSession } from "next-auth/react";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "~/components/ui/form";
-import { Input } from "~/components/ui/input";
-import { Button } from "~/components/ui/button";
-import { api } from "~/server/utils/api";
-import Router from "next/router";
 import CreateEventForm from "~/components/events/forms/CreateEventForm";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
@@ -43,7 +26,7 @@ const CreateEvent = () => {
   if (typeof window === undefined) return null;
 
   return <div className="container">
-    {session?.user.id && <CreateEventForm userId={session.user.id }></CreateEventForm>}
+    {session?.user.id && <CreateEventForm userId={session.user.id}></CreateEventForm>}
 
   </div>;
 };
