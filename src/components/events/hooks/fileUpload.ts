@@ -16,7 +16,8 @@ export const useFileUpload = (userId: string) => {
         }),
         onSuccess: () => {
             toast({
-                description: "Image updated successfully"
+                variant: "success",
+                title: "Image updated successfully"
             })
         }
     });

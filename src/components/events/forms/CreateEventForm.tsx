@@ -18,7 +18,7 @@ import { Label } from "~/components/ui/label";
 import { api } from "~/server/utils/api";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useFileUpload } from "../hooks/fileUpload";
-import { toast } from "~/components/ui/use-toast";
+import { toast, useToast } from "~/components/ui/use-toast";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -30,6 +30,7 @@ const formSchema = z.object({
 });
 
 export default function CreateEventForm({ userId }: { userId: string }) {
+  const { toast } = useToast()
   const { uploadedFile, setUploadedFile, uploadFile } = useFileUpload(userId);
   const [loading, setLoading] = useState(false);
 
@@ -61,11 +62,11 @@ export default function CreateEventForm({ userId }: { userId: string }) {
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
     if (uploadedFile) {
       await uploadFile(uploadedFile);
     }
 
-    setLoading(true);
 
     const { title, description } = values;
 
@@ -77,7 +78,10 @@ export default function CreateEventForm({ userId }: { userId: string }) {
       organiserId: userId,
     });
 
-
+    toast({
+      variant: "success",
+      title: "Event created successfully"
+    })
 
     setLoading(false);
   }
