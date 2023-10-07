@@ -10,7 +10,7 @@ import { generateUpdateSasUrl } from "~/server/utils/uploadToStorage";
 
 export const eventsRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.db.event.findMany( );
+    return await ctx.db.event.findMany();
   }),
 
   generateSasUrl: publicProcedure
@@ -31,12 +31,12 @@ export const eventsRouter = createTRPCRouter({
         startDate: z.date().optional(),
         endDate: z.date().optional(),
         organiserId: z.string(),
-        bgImageUrl: z.string(),
+        bgImageUrl: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       await ctx.db.event.create({
-        data: {...input, bgImageUrl: getPublicImageUrl(input.bgImageUrl)},
+        data: { ...input, bgImageUrl: input.bgImageUrl && getPublicImageUrl(input.bgImageUrl) },
       });
     }),
 
