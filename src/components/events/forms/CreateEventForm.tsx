@@ -18,7 +18,7 @@ import { Label } from "~/components/ui/label";
 import { api } from "~/server/utils/api";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useFileUpload } from "../hooks/fileUpload";
-import { toast, useToast } from "~/components/ui/use-toast";
+import { useToast } from "~/components/ui/use-toast";
 
 const formSchema = z.object({
   title: z.string().min(2, {

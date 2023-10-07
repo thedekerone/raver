@@ -1,12 +1,11 @@
 import { z } from "zod";
-import { getPublicImageUrl } from "~/server/utils/uploadToStorage";
-
+import { getPublicImageUrl } from "~/server/utils/storage";
+import { generateUpdateSasUrl } from "~/server/utils/storage";
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from "~/server/api/trpc";
-import { generateUpdateSasUrl } from "~/server/utils/uploadToStorage";
 
 export const eventsRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
