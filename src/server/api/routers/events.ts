@@ -8,7 +8,9 @@ import {
 
 export const eventsRouter = createTRPCRouter({
   getAll: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.db.event.findMany();
+    return await ctx.db.event.findMany({include: {
+      ticketTypes: true
+    }});
   }),
 
 
@@ -19,13 +21,12 @@ export const eventsRouter = createTRPCRouter({
         description: z.string(),
         startDate: z.date().optional(),
         endDate: z.date().optional(),
-        organiserId: z.string(),
         bgImageUrl: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       await ctx.db.event.create({
-        data: { ...input, bgImageUrl: input.bgImageUrl && getPublicImageUrl(input.bgImageUrl) },
+        data: { ...input, organiserId: ctx.session.user.id, bgImageUrl: input.bgImageUrl && getPublicImageUrl(input.bgImageUrl) },
       });
     }),
 
@@ -38,6 +39,9 @@ export const eventsRouter = createTRPCRouter({
         },
         orderBy: {
           startDate: "asc"
+        },
+        include:{
+          ticketTypes:true
         }
       })
     }),
@@ -45,4 +49,12 @@ export const eventsRouter = createTRPCRouter({
   getByID: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
     return ctx.db.event.findFirst({ where: { id: input } });
   }),
+
+  getTicketTypesByEventId: publicProcedure.input(z.string()).query(async ({ctx, input})=>{
+    return await ctx.db.ticketType.findMany({
+      where: {
+        eventId: input
+      }
+    })
+  })
 });

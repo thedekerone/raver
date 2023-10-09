@@ -29,9 +29,9 @@ const formSchema = z.object({
   }),
 });
 
-export default function CreateEventForm({ userId }: { userId: string }) {
+export default function CreateEventForm() {
   const { toast } = useToast()
-  const { uploadedFile, setUploadedFile, uploadFile } = useFileUpload(userId);
+  const { uploadedFile, setUploadedFile, uploadFile } = useFileUpload();
   const [loading, setLoading] = useState(false);
 
   const createEvent = api.events.create.useMutation({
@@ -75,7 +75,6 @@ export default function CreateEventForm({ userId }: { userId: string }) {
       title,
       description,
       bgImageUrl: uploadedFile?.name,
-      organiserId: userId,
     });
 
     toast({

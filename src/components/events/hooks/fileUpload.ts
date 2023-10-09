@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useToast } from "~/components/ui/use-toast";
 import { api } from "~/server/utils/api";
 
-export const useFileUpload = (userId: string) => {
+export const useFileUpload = () => {
     const { toast } = useToast()
     const [uploadedFile, setUploadedFile] = useState<File | undefined>();
 
@@ -37,7 +37,7 @@ export const useFileUpload = (userId: string) => {
             const fileBuffer = await file.arrayBuffer();
             await blobService.uploadData(fileBuffer);
 
-            createImage.mutate({ name: file.name, userId: userId });
+            createImage.mutate({ name: file.name });
 
         } catch (error) {
             toast({
