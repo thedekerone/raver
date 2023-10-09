@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { getPublicImageUrl } from "~/server/utils/storage";
-import { generateUpdateSasUrl } from "~/server/utils/storage";
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -12,15 +11,6 @@ export const eventsRouter = createTRPCRouter({
     return await ctx.db.event.findMany();
   }),
 
-  generateSasUrl: publicProcedure
-    .input(
-      z.object({
-        fileName: z.string(),
-      }),
-    )
-    .query(async ({ input }) => {
-      return generateUpdateSasUrl(input.fileName);
-    }),
 
   create: protectedProcedure
     .input(
@@ -37,6 +27,19 @@ export const eventsRouter = createTRPCRouter({
       await ctx.db.event.create({
         data: { ...input, bgImageUrl: input.bgImageUrl && getPublicImageUrl(input.bgImageUrl) },
       });
+    }),
+
+    getUpcoming: publicProcedure.query(async ({ctx})=>{
+      return await ctx.db.event.findMany({
+        where: {
+          startDate:{
+            gte: new Date(),
+          },
+        },
+        orderBy: {
+          startDate: "asc"
+        }
+      })
     }),
 
   getByID: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {

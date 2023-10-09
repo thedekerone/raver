@@ -4,6 +4,7 @@ import {
   createTRPCRouter,
   protectedProcedure,
 } from "~/server/api/trpc";
+import { generateUpdateSasUrl } from "~/server/utils/storage";
 
 export const imagesRouter = createTRPCRouter({
 
@@ -22,6 +23,15 @@ export const imagesRouter = createTRPCRouter({
           userId: input.userId
         },
       });
+    }),
+    generateSasUrl: protectedProcedure
+    .input(
+      z.object({
+        fileName: z.string(),
+      }),
+    )
+    .query(async ({ input }) => {
+      return generateUpdateSasUrl(input.fileName);
     }),
 
 });

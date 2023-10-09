@@ -22,7 +22,7 @@ export const useFileUpload = (userId: string) => {
         }
     });
 
-    const sasUri = api.events.generateSasUrl.useQuery(
+    const sasUri = api.images.generateSasUrl.useQuery(
         { fileName: uploadedFile?.name ?? "" },
         { enabled: !!uploadedFile?.name },
     ).data;
