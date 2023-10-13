@@ -1,11 +1,11 @@
 import React from "react";
-import CreateEventForm from "~/components/events/forms/CreateEventForm";
+import EventsForm from "~/components/events/form/EventsForm";
 import { withAuth } from "~/hoc/withAuth";
 
 const CreateEvent = () => {
 
   return <div className="container">
-    <CreateEventForm ></CreateEventForm>
+    <EventsForm ></EventsForm>
 
   </div>;
 };

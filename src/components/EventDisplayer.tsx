@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Button } from "./ui/button";
+import Link from "next/link";
 
 type Props = { events: (Event & { ticketTypes: TicketType[] })[], buyTicket?: (event: Event & { ticketTypes: TicketType[] }) => void, isLoggedIn: boolean }
 
@@ -31,7 +32,11 @@ export default function EventDisplayer({ events, buyTicket, isLoggedIn = false }
             />
           </AspectRatio>
           <CardHeader>
-            <CardTitle> {eventItem.title}</CardTitle>
+            <CardTitle>
+              <Link href={`events/${eventItem.id}`}>
+                {eventItem.title}
+              </Link>
+            </CardTitle>
             <CardDescription>{eventItem.description}</CardDescription>
           </CardHeader>
           {isLoggedIn && <CardFooter>

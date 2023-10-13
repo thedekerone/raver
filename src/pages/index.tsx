@@ -30,7 +30,7 @@ export default function Home() {
     if (!session?.user?.id || !event?.ticketTypes?.length) {
       return
     }
-    createTicket.mutate({ userId: session.user.id, ticketTypeId: event.ticketTypes?.[0]?.id, eventId: event.id })
+    createTicket.mutate({ userId: session.user.id, ticketTypeId: event.ticketTypes?.[0]?.id!, eventId: event.id })
   }
 
   return (

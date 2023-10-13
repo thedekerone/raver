@@ -29,7 +29,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function CreateEventForm() {
+export default function EventsForm() {
   const { toast } = useToast()
   const { uploadedFile, setUploadedFile, uploadFile } = useFileUpload();
   const [loading, setLoading] = useState(false);
