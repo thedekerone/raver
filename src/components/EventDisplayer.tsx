@@ -1,20 +1,18 @@
-import { type TicketType, type Event } from "@prisma/client";
+import { type Event } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
 import { AspectRatio } from "./ui/aspect-ratio";
 import {
   Card,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "./ui/card";
-import { Button } from "./ui/button";
 import Link from "next/link";
 
-type Props = { events: (Event & { ticketTypes: TicketType[] })[], buyTicket?: (event: Event & { ticketTypes: TicketType[] }) => void, isLoggedIn: boolean }
+type Props = { events: Event[] }
 
-export default function EventDisplayer({ events, buyTicket, isLoggedIn = false }: Props) {
+export default function EventDisplayer({ events }: Props) {
 
 
   return (
@@ -39,10 +37,7 @@ export default function EventDisplayer({ events, buyTicket, isLoggedIn = false }
             </CardTitle>
             <CardDescription>{eventItem.description}</CardDescription>
           </CardHeader>
-          {isLoggedIn && <CardFooter>
 
-            <Button onClick={() => buyTicket?.(eventItem)}>Buy</Button>
-          </CardFooter>}
         </Card>
       ))}
     </div>
