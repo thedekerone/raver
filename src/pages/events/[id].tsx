@@ -55,7 +55,7 @@ export default function EventsDetailsPage(props: InferGetStaticPropsType<typeof 
     return (<>
         <Navbar />
 
-        <EventsDetails event={event}></EventsDetails>
+        <EventsDetails eventItem={event}></EventsDetails>
     </>
     )
 }
