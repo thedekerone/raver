@@ -22,7 +22,7 @@ export default function EventDisplayer({ events }: Props) {
           <AspectRatio ratio={16 / 9} className="bg-muted">
             <Image
               fill
-              objectFit="contain"
+              objectFit="cover"
               src={
                 eventItem?.bgImageUrl ||
                 "https://media.traveler.es/photos/63aa3a712424e02f98a62399/16:9/w_2560%2Cc_limit/iStock-518820132.jpg"
@@ -30,6 +30,7 @@ export default function EventDisplayer({ events }: Props) {
               alt="test"
             />
           </AspectRatio>
+
           <CardHeader>
             <CardTitle>
               <Link href={`events/${eventItem.id}`}>
@@ -38,7 +39,6 @@ export default function EventDisplayer({ events }: Props) {
             </CardTitle>
             <CardDescription>{eventItem.description}</CardDescription>
           </CardHeader>
-
         </Card>
       ))}
     </div>

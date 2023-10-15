@@ -4,14 +4,37 @@ import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import Image from "next/image";
 import { Button } from "~/components/ui/button";
 import { BsFacebook, BsTwitter, BsTwitch } from "react-icons/bs";
+import { api } from "~/server/utils/api";
+import { useToast } from "~/components/ui/use-toast";
 
 type Props = {
     eventItem: Event & { ticketTypes: TicketType[] };
 };
 
 export default function EventsDetails({
-    eventItem: { title, description, ticketTypes, bgImageUrl },
+    eventItem: { title, description, ticketTypes, bgImageUrl, id },
 }: Props) {
+    const { toast } = useToast()
+
+    const buyTicket = api.tickets.create.useMutation({
+        onError: (error) => {
+            toast({
+                variant: "destructive",
+                title: "Error: Couldn't buy ticket",
+                description: error.message,
+            })
+        },
+        onMutate: () => {
+            toast({
+                description: "Ticket purchased successfully",
+            })
+        },
+    })
+
+    function handleTicketPurchase(ticketTypeId: string) {
+        buyTicket.mutate({ eventId: id, ticketTypeId: ticketTypeId })
+    }
+
     return (
         <div className="container ">
             <div className="container max-w-2xl">
@@ -62,12 +85,12 @@ export default function EventsDetails({
             </div>
 
             <div className="container max-w-lg mt-7 ">
-                {ticketTypes.map(ticket => {
-                    return <div key={ticket.id} className="flex justify-between border rounded items-center p-3">
+                {ticketTypes.map(ticketType => {
+                    return <div key={ticketType.id} className="flex justify-between border rounded items-center p-3">
                         <span>
-                            {ticket.name}
+                            {ticketType.name}
                         </span>
-                        <Button className="text-xs h-8">
+                        <Button onClick={() => handleTicketPurchase(ticketType.id)} className="text-xs h-8">
                             Buy
                         </Button>
 
