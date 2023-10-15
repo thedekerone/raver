@@ -57,4 +57,5 @@ export const eventsRouter = createTRPCRouter({
       }
     })
   })
+
 });
