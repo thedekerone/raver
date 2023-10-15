@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { type TicketType, type Event } from "@prisma/client";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import Image from "next/image";
@@ -6,6 +6,7 @@ import { Button } from "~/components/ui/button";
 import { BsFacebook, BsTwitter, BsTwitch } from "react-icons/bs";
 import { api } from "~/server/utils/api";
 import { useToast } from "~/components/ui/use-toast";
+import { ReloadIcon } from "@radix-ui/react-icons";
 
 type Props = {
     eventItem: Event & { ticketTypes: TicketType[] };
@@ -15,8 +16,10 @@ export default function EventsDetails({
     eventItem: { title, description, ticketTypes, bgImageUrl, id },
 }: Props) {
     const { toast } = useToast()
+    const [loading, setLoading] = useState(false)
 
     const buyTicket = api.tickets.create.useMutation({
+
         onError: (error) => {
             toast({
                 variant: "destructive",
@@ -25,10 +28,14 @@ export default function EventsDetails({
             })
         },
         onMutate: () => {
+            setLoading(true)
+        },
+        onSuccess: () => {
             toast({
                 description: "Ticket purchased successfully",
             })
-        },
+            setLoading(false)
+        }
     })
 
     function handleTicketPurchase(ticketTypeId: string) {
@@ -91,9 +98,10 @@ export default function EventsDetails({
                             {ticketType.name}
                         </span>
                         <Button onClick={() => handleTicketPurchase(ticketType.id)} className="text-xs h-8">
-                            Buy
+                            {loading ? <>
+                                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> Loading
+                            </> : 'Buy'}
                         </Button>
-
                     </div>
                 })}
             </div>
