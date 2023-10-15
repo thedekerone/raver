@@ -22,6 +22,7 @@ export default function EventDisplayer({ events }: Props) {
           <AspectRatio ratio={16 / 9} className="bg-muted">
             <Image
               fill
+              objectFit="contain"
               src={
                 eventItem?.bgImageUrl ||
                 "https://media.traveler.es/photos/63aa3a712424e02f98a62399/16:9/w_2560%2Cc_limit/iStock-518820132.jpg"

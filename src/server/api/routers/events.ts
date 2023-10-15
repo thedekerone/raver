@@ -47,7 +47,7 @@ export const eventsRouter = createTRPCRouter({
     }),
 
   getByID: publicProcedure.input(z.string()).query(async ({ ctx, input }) => {
-    return ctx.db.event.findFirst({ where: { id: input }, include:{ticketTypes:true} });
+    return ctx.db.event.findFirst({ where: { id: input }, include:{ticketTypes:true, Marketing: true} });
   }),
 
   getTicketTypesByEventId: publicProcedure.input(z.string()).query(async ({ctx, input})=>{
