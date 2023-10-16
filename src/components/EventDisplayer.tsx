@@ -16,7 +16,7 @@ export default function EventDisplayer({ events }: Props) {
 
 
   return (
-    <div className="container grid grid-cols-4 gap-4	">
+    <div className="grid grid-cols-4 gap-4	">
       {events.map((eventItem) => (
         <Card key={eventItem.id} className="container-sm overflow-hidden">
           <AspectRatio ratio={16 / 9} className="bg-muted">

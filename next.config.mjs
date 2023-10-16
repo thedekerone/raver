@@ -8,7 +8,7 @@ await import("./src/env.mjs");
 const config = {
   reactStrictMode: true,
   images: {
-    domains: ["www.publimetro.pe", "dekker2.blob.core.windows.net", "media.traveler.es"],
+    domains: ["www.publimetro.pe", "dekker2.blob.core.windows.net", "media.traveler.es", "localhost "],
   },
   /**
    * If you are using `appDir` then you must comment the below `i18n` config out.
