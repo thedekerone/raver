@@ -6,7 +6,6 @@ import SuperJSON from 'superjson';
 import { db } from '~/server/db';
 import { api } from '~/server/utils/api';
 import EventsDetails from '~/components/events/details/EventsDetails';
-import { Navbar } from '~/components/layout/Navbar';
 
 export async function getStaticProps(
     context: GetStaticPropsContext<{ id: string }>,
