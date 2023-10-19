@@ -22,6 +22,7 @@ export const eventsRouter = createTRPCRouter({
         startDate: z.date().optional(),
         endDate: z.date().optional(),
         bgImageUrl: z.string().optional(),
+        onSaleDate: z.date().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
