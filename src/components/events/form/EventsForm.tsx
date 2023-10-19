@@ -181,9 +181,6 @@ export default function EventsForm() {
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>
-                  Your date of birth is used to calculate your age.
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -225,9 +222,6 @@ export default function EventsForm() {
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>
-                  Your date of birth is used to calculate your age.
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -270,9 +264,6 @@ export default function EventsForm() {
                     />
                   </PopoverContent>
                 </Popover>
-                <FormDescription>
-                  Your date of birth is used to calculate your age.
-                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
