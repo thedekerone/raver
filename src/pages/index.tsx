@@ -1,5 +1,4 @@
 import { api } from "~/server/utils/api";
-import { Navbar } from "~/components/layout/Navbar";
 import EventDisplayer from "~/components/EventDisplayer";
 import { Button } from "~/components/ui/button";
 import Carousel from "~/components/layout/Carousel";
@@ -11,8 +10,6 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
-
       <div className="container flex-col flex items-center justify-center my-16">
         <h2 className="text-3xl font-bold max-w-sm text-center mb-4">
           Discover Exciting Events Near You
