@@ -52,12 +52,7 @@ export default function EventsDetailsPage(props: InferGetStaticPropsType<typeof 
     if (!event) {
         return "loading..."
     }
-    return (<>
-        <Navbar />
-
-        <EventsDetails eventItem={event}></EventsDetails>
-    </>
-    )
+    return <EventsDetails eventItem={event}></EventsDetails>
 }
 
 
