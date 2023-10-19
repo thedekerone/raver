@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
+  FormDescription,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -19,6 +20,11 @@ import { api } from "~/server/utils/api";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useFileUpload } from "../hooks/fileUpload";
 import { useToast } from "~/components/ui/use-toast";
+import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import { cn } from "~/lib/utils";
+import { CalendarIcon } from "lucide-react";
+import { Calendar } from "~/components/ui/calendar";
+import { format } from "date-fns";
 
 const formSchema = z.object({
   title: z.string().min(2, {
@@ -27,6 +33,9 @@ const formSchema = z.object({
   description: z.string().min(2, {
     message: "Title must be at least 2 characters.",
   }),
+  startDate: z.date().optional(),
+  endDate: z.date().optional(),
+  onSaleDate: z.date().optional(),
 });
 
 export default function EventsForm() {
@@ -67,13 +76,20 @@ export default function EventsForm() {
       await uploadFile(uploadedFile);
     }
 
-
-    const { title, description } = values;
-
+    const {
+      title,
+      description,
+      startDate,
+      endDate,
+      onSaleDate,
+    } = values;
 
     await createEvent.mutateAsync({
       title,
       description,
+      startDate,
+      endDate,
+      ...(onSaleDate ? { onSaleDate } : {}),
       bgImageUrl: uploadedFile?.name,
     });
 
@@ -97,7 +113,7 @@ export default function EventsForm() {
                 <FormLabel>Title</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="shadcn" {...field} />
+                    placeholder="date" {...field} />
                 </FormControl>
 
                 <FormMessage />
@@ -125,6 +141,137 @@ export default function EventsForm() {
 
               onChange={onFileChange} id="picture" type="file" />
           </div>
+
+          {/* TODO: FIGURE OUT THE TS FOR DATEPICKER LATER */}
+
+          <FormField
+            control={form.control}
+            name="startDate"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Start Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-[240px] pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date < new Date()
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="endDate"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>End Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-[240px] pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date < new Date()
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="onSaleDate"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>Sales Date</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={"outline"}
+                        className={cn(
+                          "w-[240px] pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, "PPP")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) =>
+                        date < new Date()
+                      }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+
+
+
           <Button disabled={loading} type="submit">
             {loading ? (
               <>
