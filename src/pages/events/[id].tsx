@@ -6,7 +6,6 @@ import SuperJSON from 'superjson';
 import { db } from '~/server/db';
 import { api } from '~/server/utils/api';
 import EventsDetails from '~/components/events/details/EventsDetails';
-import { Navbar } from '~/components/layout/Navbar';
 
 export async function getStaticProps(
     context: GetStaticPropsContext<{ id: string }>,
@@ -52,12 +51,7 @@ export default function EventsDetailsPage(props: InferGetStaticPropsType<typeof 
     if (!event) {
         return "loading..."
     }
-    return (<>
-        <Navbar />
-
-        <EventsDetails eventItem={event}></EventsDetails>
-    </>
-    )
+    return <EventsDetails eventItem={event}></EventsDetails>
 }
 
 
