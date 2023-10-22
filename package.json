@@ -54,7 +54,7 @@
     }
   },
   "lint-staged":{
-    "*.{js,ts,tsx,jsx}": "eslint --cache --fix"
+    "*.{js,ts}": "eslint --cache --fix"
   },
   "devDependencies": {
     "@types/eslint": "^8.44.2",
