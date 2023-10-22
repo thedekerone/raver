@@ -8,7 +8,9 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "lint-fix": "next lint --fix",
+    "start": "next start",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@azure/identity": "^3.3.0",
@@ -47,14 +49,6 @@
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^9.0.1",
     "zod": "^3.22.2"
-  },
-  "husky": {
-    "hooks":{
-        "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged":{
-    "*.{js,ts}": "eslint --cache --fix"
   },
   "devDependencies": {
     "@types/eslint": "^8.44.2",

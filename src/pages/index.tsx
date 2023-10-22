@@ -30,7 +30,6 @@ export default function Home() {
       </>}
 
 
-
       <div className="container mb-7">
         <h2 className="mb-3 font-semibold">Upcoming Events</h2>
         {upcomingEvents && <EventDisplayer events={upcomingEvents}></EventDisplayer>}

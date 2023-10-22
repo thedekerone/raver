@@ -29,8 +29,6 @@ export default function EventsDetails({
         },
 
 
-
-
         onMutate: () => {
             setLoading(true)
         },

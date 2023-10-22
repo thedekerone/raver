@@ -269,8 +269,6 @@ export default function EventsForm() {
           />
 
 
-
-
           <Button disabled={loading} type="submit">
             {loading ? (
               <>
