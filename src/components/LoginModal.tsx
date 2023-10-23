@@ -24,7 +24,7 @@ function LoginModal() {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) =>
     setEmail(e.target.value);
 
-  const sendEmail = async () => {
+  const sendEmail = () => {
     try {
       if (!email) return;
       toast({
