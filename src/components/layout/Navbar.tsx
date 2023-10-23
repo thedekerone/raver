@@ -22,7 +22,7 @@ export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
             height="50"
             src="/WhatsApp Image 2023-10-15 at 15.01.46.png"
             alt="logo"
-          />{" "}
+          />
         </div>
       </Link>
       <NavigationMenu>
