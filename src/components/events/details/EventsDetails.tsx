@@ -43,7 +43,7 @@ export default function EventsDetails({
     }
 
     return (
-        <div className="container ">
+        <div className="container">
             <div className="container max-w-2xl">
                 <div className="text-sm">
                     <span>Events</span>
@@ -79,7 +79,7 @@ export default function EventsDetails({
                     </div>
                     <div className="flex gap-4">
                         <span>
-                            <BsFacebook />{" "}
+                            <BsFacebook />
                         </span>
                         <span>
                             <BsTwitter />
