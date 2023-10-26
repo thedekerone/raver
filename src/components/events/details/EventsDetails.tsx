@@ -27,6 +27,8 @@ export default function EventsDetails({
                 description: error.message,
             })
         },
+
+
         onMutate: () => {
             setLoading(true)
         },
