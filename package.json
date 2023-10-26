@@ -7,8 +7,8 @@
     "db:push": "prisma db push",
     "dev": "next dev",
     "postinstall": "prisma generate",
+    "lint-fix": "eslint --fix --ext '.ts|.tsx' src",
     "lint": "next lint",
-    "lint-fix": "next lint --fix",
     "start": "next start",
     "prepare": "husky install"
   },
@@ -63,6 +63,8 @@
     "autoprefixer": "^10.4.14",
     "eslint": "^8.47.0",
     "eslint-config-next": "^13.4.19",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.1",
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
     "postcss": "^8.4.27",

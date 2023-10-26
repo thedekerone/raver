@@ -1,11 +1,15 @@
-import { type GetStaticPaths, type GetStaticPropsContext, type InferGetStaticPropsType } from 'next'
-import { createServerSideHelpers } from '@trpc/react-query/server';
-import React from 'react'
-import { appRouter } from '~/server/api/root';
-import SuperJSON from 'superjson';
-import { db } from '~/server/db';
-import { api } from '~/server/utils/api';
-import EventsDetails from '~/components/events/details/EventsDetails';
+import {
+    type GetStaticPaths,
+    type GetStaticPropsContext,
+    type InferGetStaticPropsType,
+} from "next";
+import { createServerSideHelpers } from "@trpc/react-query/server";
+import React from "react";
+import { appRouter } from "~/server/api/root";
+import SuperJSON from "superjson";
+import { db } from "~/server/db";
+import { api } from "~/server/utils/api";
+import EventsDetails from "~/components/events/details/EventsDetails";
 
 export async function getStaticProps(
     context: GetStaticPropsContext<{ id: string }>,
@@ -14,7 +18,7 @@ export async function getStaticProps(
         router: appRouter,
         ctx: {
             session: null,
-            db
+            db,
         },
         transformer: SuperJSON, // optional - adds superjson serialization
     });
@@ -41,17 +45,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
                 id: event.id,
             },
         })),
-        fallback: 'blocking',
+        fallback: "blocking",
     };
 };
-export default function EventsDetailsPage(props: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function EventsDetailsPage(
+    props: InferGetStaticPropsType<typeof getStaticProps>,
+) {
     const { id } = props;
     const event = api.events.getByID.useQuery(id).data;
 
     if (!event) {
-        return "loading..."
+        return "loading...";
     }
-    return <EventsDetails eventItem={event}></EventsDetails>
+    return <EventsDetails eventItem={event}></EventsDetails>;
 }
-
-
