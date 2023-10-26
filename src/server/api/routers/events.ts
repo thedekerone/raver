@@ -31,8 +31,6 @@ export const eventsRouter = createTRPCRouter({
                 data: {
                     ...input,
                     organiserId: ctx.session.user.id,
-                    bgImageUrl:
-                        input.bgImageUrl && getPublicImageUrl(input.bgImageUrl),
                 },
             });
         }),

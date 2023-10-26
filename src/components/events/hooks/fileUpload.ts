@@ -36,7 +36,8 @@ export const useFileUpload = () => {
             const fileBuffer = await file.arrayBuffer();
             await blobService.uploadData(fileBuffer);
 
-            createImage.mutate({ name: file.name });
+            await createImage.mutateAsync({ name: file.name });
+            return createImage.data;
         } catch (error) {
             toast({
                 variant: "destructive",
@@ -45,5 +46,5 @@ export const useFileUpload = () => {
         }
     }
 
-    return { uploadedFile, setUploadedFile, sasUri, uploadFile };
+    return { uploadedFile, setUploadedFile, uploadFile };
 };
