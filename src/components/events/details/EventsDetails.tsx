@@ -15,33 +15,31 @@ type Props = {
 export default function EventsDetails({
     eventItem: { title, description, ticketTypes, bgImageUrl, id },
 }: Props) {
-    const { toast } = useToast()
-    const [loading, setLoading] = useState(false)
+    const { toast } = useToast();
+    const [loading, setLoading] = useState(false);
 
     const buyTicket = api.tickets.create.useMutation({
-
         onError: (error) => {
             toast({
                 variant: "destructive",
                 title: "Error: Couldn't buy ticket",
                 description: error.message,
-            })
+            });
         },
 
-
         onMutate: () => {
-            setLoading(true)
+            setLoading(true);
         },
         onSuccess: () => {
             toast({
                 description: "Ticket purchased successfully",
-            })
-            setLoading(false)
-        }
-    })
+            });
+            setLoading(false);
+        },
+    });
 
     function handleTicketPurchase(ticketTypeId: string) {
-        buyTicket.mutate({ eventId: id, ticketTypeId: ticketTypeId })
+        buyTicket.mutate({ eventId: id, ticketTypeId: ticketTypeId });
     }
 
     return (
@@ -56,7 +54,6 @@ export default function EventsDetails({
                     <h1 className="mb-2 text-5xl font-bold">{title}</h1>
 
                     <span>{description}</span>
-
                 </div>
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3 ">
@@ -93,25 +90,43 @@ export default function EventsDetails({
                 </div>
             </div>
 
-            <div className="container max-w-lg mt-7 ">
-                {ticketTypes.map(ticketType => {
-                    return <div key={ticketType.id} className="flex justify-between border rounded items-center p-3">
-                        <span>
-                            {ticketType.name}
-                        </span>
-                        <Button onClick={() => handleTicketPurchase(ticketType.id)} className="text-xs h-8">
-                            {loading ? <>
-                                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> Loading
-                            </> : 'Buy'}
-                        </Button>
-                    </div>
+            <div className="container mt-7 max-w-lg ">
+                {ticketTypes.map((ticketType) => {
+                    return (
+                        <div
+                            key={ticketType.id}
+                            className="flex items-center justify-between rounded border p-3"
+                        >
+                            <span>{ticketType.name}</span>
+                            <Button
+                                onClick={() =>
+                                    handleTicketPurchase(ticketType.id)
+                                }
+                                className="h-8 text-xs"
+                            >
+                                {loading ? (
+                                    <>
+                                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />{" "}
+                                        Loading
+                                    </>
+                                ) : (
+                                    "Buy"
+                                )}
+                            </Button>
+                        </div>
+                    );
                 })}
             </div>
 
             <div className="container mt-10">
                 <AspectRatio ratio={5 / 2} className="w-full">
-                    <Image objectPosition="top" objectFit="cover" fill src={bgImageUrl || ""} alt={title}></Image>
-
+                    <Image
+                        objectPosition="top"
+                        objectFit="cover"
+                        fill
+                        src={bgImageUrl || ""}
+                        alt={title}
+                    ></Image>
                 </AspectRatio>
             </div>
         </div>

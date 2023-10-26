@@ -19,7 +19,11 @@ import { api } from "~/server/utils/api";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useFileUpload } from "../hooks/fileUpload";
 import { useToast } from "~/components/ui/use-toast";
-import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "~/components/ui/popover";
 import { cn } from "~/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "~/components/ui/calendar";
@@ -38,7 +42,7 @@ const formSchema = z.object({
 });
 
 export default function EventsForm() {
-    const { toast } = useToast()
+    const { toast } = useToast();
     const { uploadedFile, setUploadedFile, uploadFile } = useFileUpload();
     const [loading, setLoading] = useState(false);
 
@@ -48,12 +52,12 @@ export default function EventsForm() {
                 variant: "destructive",
                 title: "Error: Couldn't create event",
                 description: error.message,
-            })
+            });
         },
         onMutate: () => {
             toast({
                 description: "Event created successfully",
-            })
+            });
         },
     });
 
@@ -63,7 +67,7 @@ export default function EventsForm() {
 
     function onFileChange(event: ChangeEvent<HTMLInputElement>) {
         if (!event?.target?.files?.[0]) {
-            return
+            return;
         }
 
         setUploadedFile(event.target.files[0]);
@@ -75,13 +79,7 @@ export default function EventsForm() {
             await uploadFile(uploadedFile);
         }
 
-        const {
-            title,
-            description,
-            startDate,
-            endDate,
-            onSaleDate,
-        } = values;
+        const { title, description, startDate, endDate, onSaleDate } = values;
 
         await createEvent.mutateAsync({
             title,
@@ -94,16 +92,19 @@ export default function EventsForm() {
 
         toast({
             variant: "success",
-            title: "Event created successfully"
-        })
+            title: "Event created successfully",
+        });
 
         setLoading(false);
     }
 
     return (
-        <div className="container rounded bg-white max-w-xl justify-center flex items-center shadow-md py-6">
+        <div className="container flex max-w-xl items-center justify-center rounded bg-white py-6 shadow-md">
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+                <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="w-full space-y-8"
+                >
                     <FormField
                         control={form.control}
                         name="title"
@@ -111,8 +112,7 @@ export default function EventsForm() {
                             <FormItem>
                                 <FormLabel>Title</FormLabel>
                                 <FormControl>
-                                    <Input
-                                        placeholder="date" {...field} />
+                                    <Input placeholder="date" {...field} />
                                 </FormControl>
 
                                 <FormMessage />
@@ -127,7 +127,10 @@ export default function EventsForm() {
                             <FormItem>
                                 <FormLabel>Description</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="descripcion" {...field} />
+                                    <Input
+                                        placeholder="descripcion"
+                                        {...field}
+                                    />
                                 </FormControl>
 
                                 <FormMessage />
@@ -137,8 +140,11 @@ export default function EventsForm() {
                     <div className="items-center gap-1.5">
                         <Label htmlFor="picture">Picture</Label>
                         <Input
-                            className="w-full flex"
-                            onChange={onFileChange} id="picture" type="file" />
+                            className="flex w-full"
+                            onChange={onFileChange}
+                            id="picture"
+                            type="file"
+                        />
                     </div>
 
                     {/* TODO: FIGURE OUT THE TS FOR DATEPICKER LATER */}
@@ -147,7 +153,7 @@ export default function EventsForm() {
                         control={form.control}
                         name="startDate"
                         render={({ field }) => (
-                            <FormItem className="flex flex-col w-full">
+                            <FormItem className="flex w-full flex-col">
                                 <FormLabel>Start Date</FormLabel>
                                 <Popover>
                                     <PopoverTrigger asChild>
@@ -156,7 +162,8 @@ export default function EventsForm() {
                                                 variant={"outline"}
                                                 className={cn(
                                                     "w-full pl-3 text-left font-normal",
-                                                    !field.value && "text-muted-foreground"
+                                                    !field.value &&
+                                                        "text-muted-foreground",
                                                 )}
                                             >
                                                 {field.value ? (
@@ -168,7 +175,10 @@ export default function EventsForm() {
                                             </Button>
                                         </FormControl>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-auto p-0" align="start">
+                                    <PopoverContent
+                                        className="w-auto p-0"
+                                        align="start"
+                                    >
                                         <Calendar
                                             mode="single"
                                             selected={field.value}
@@ -188,7 +198,7 @@ export default function EventsForm() {
                         control={form.control}
                         name="endDate"
                         render={({ field }) => (
-                            <FormItem className="flex flex-col w-full">
+                            <FormItem className="flex w-full flex-col">
                                 <FormLabel>End Date</FormLabel>
                                 <Popover>
                                     <PopoverTrigger asChild>
@@ -197,7 +207,8 @@ export default function EventsForm() {
                                                 variant={"outline"}
                                                 className={cn(
                                                     "w-full pl-3 text-left font-normal",
-                                                    !field.value && "text-muted-foreground"
+                                                    !field.value &&
+                                                        "text-muted-foreground",
                                                 )}
                                             >
                                                 {field.value ? (
@@ -209,7 +220,10 @@ export default function EventsForm() {
                                             </Button>
                                         </FormControl>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-auto p-0" align="start">
+                                    <PopoverContent
+                                        className="w-auto p-0"
+                                        align="start"
+                                    >
                                         <Calendar
                                             mode="single"
                                             selected={field.value}
@@ -230,7 +244,7 @@ export default function EventsForm() {
                         control={form.control}
                         name="onSaleDate"
                         render={({ field }) => (
-                            <FormItem className="flex flex-col w-full">
+                            <FormItem className="flex w-full flex-col">
                                 <FormLabel>Sales Date</FormLabel>
                                 <Popover>
                                     <PopoverTrigger asChild>
@@ -239,7 +253,8 @@ export default function EventsForm() {
                                                 variant={"outline"}
                                                 className={cn(
                                                     "w-full pl-3 text-left font-normal",
-                                                    !field.value && "text-muted-foreground"
+                                                    !field.value &&
+                                                        "text-muted-foreground",
                                                 )}
                                             >
                                                 {field.value ? (
@@ -251,7 +266,10 @@ export default function EventsForm() {
                                             </Button>
                                         </FormControl>
                                     </PopoverTrigger>
-                                    <PopoverContent className="w-auto p-0" align="start">
+                                    <PopoverContent
+                                        className="w-auto p-0"
+                                        align="start"
+                                    >
                                         <Calendar
                                             mode="single"
                                             selected={field.value}
@@ -271,7 +289,8 @@ export default function EventsForm() {
                     <Button disabled={loading} className="w-full" type="submit">
                         {loading ? (
                             <>
-                                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> Creating
+                                <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />{" "}
+                                Creating
                             </>
                         ) : (
                             "Submit"
@@ -280,6 +299,5 @@ export default function EventsForm() {
                 </form>
             </Form>
         </div>
-
     );
 }
