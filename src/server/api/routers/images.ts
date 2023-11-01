@@ -7,13 +7,13 @@ export const imagesRouter = createTRPCRouter({
     create: protectedProcedure
         .input(
             z.object({
-                name: z.string(),
+                url: z.string(),
             }),
         )
         .mutation(async ({ ctx, input }) => {
             return await ctx.db.image.create({
                 data: {
-                    imagePath: input.name,
+                    imagePath: input.url,
                     userId: ctx.session.user.id,
                 },
             });

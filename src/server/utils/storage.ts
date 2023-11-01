@@ -42,7 +42,7 @@ export async function generateUpdateSasUrl(fileName: string) {
         protocol: SASProtocol.HttpsAndHttp,
     });
 
-    return accountSasTokenUrl;
+    return { sasUrl: accountSasTokenUrl, imageUrl: blockBlobClient.url };
 }
 
 export function getPublicImageUrl(name: string) {
