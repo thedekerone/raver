@@ -15,9 +15,10 @@ import { Separator } from "./ui/separator";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { useToast } from "./ui/use-toast";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 function LoginModal() {
+    const { data: session } = useSession();
     const [email, setEmail] = useState("");
     const { toast } = useToast();
 
@@ -39,7 +40,11 @@ function LoginModal() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button>Sign In</Button>
+                {session?.user ? (
+                    <Button>Sign Out</Button>
+                ) : (
+                    <Button>Sign In</Button>
+                )}
             </DialogTrigger>
 
             <DialogContent className="sm:max-w-[425px]">

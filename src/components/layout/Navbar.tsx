@@ -23,6 +23,16 @@ export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
             <NavigationMenu>
                 <NavigationMenuList className="flex items-center">
                     <NavigationMenuItem>
+                        <Link href="/tickets" legacyBehavior passHref>
+                            <NavigationMenuLink
+                                className={navigationMenuTriggerStyle()}
+                            >
+                                My tickets
+                            </NavigationMenuLink>
+                        </Link>
+                    </NavigationMenuItem>
+
+                    <NavigationMenuItem>
                         <Link
                             href="/admin/events/create"
                             legacyBehavior
