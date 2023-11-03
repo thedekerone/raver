@@ -75,8 +75,9 @@ export default function EventsForm() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setLoading(true);
+        let file;
         if (uploadedFile) {
-            await uploadFile(uploadedFile);
+            file = await uploadFile(uploadedFile);
         }
 
         const { title, description, startDate, endDate, onSaleDate } = values;
@@ -87,7 +88,7 @@ export default function EventsForm() {
             startDate,
             endDate,
             ...(onSaleDate ? { onSaleDate } : {}),
-            bgImageUrl: uploadedFile?.name,
+            bgImageUrl: file?.imagePath,
         });
 
         toast({

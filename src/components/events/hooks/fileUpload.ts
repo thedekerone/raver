@@ -22,21 +22,22 @@ export const useFileUpload = () => {
         },
     });
 
-    const sasUri = api.images.generateSasUrl.useQuery(
+    const data = api.images.generateSasUrl.useQuery(
         { fileName: uploadedFile?.name ?? "" },
         { enabled: !!uploadedFile?.name },
     ).data;
 
     async function uploadFile(file: File) {
-        if (!sasUri) {
+        if (!data?.sasUrl) {
             throw new Error("Storage not found");
         }
-        const blobService = new BlockBlobClient(sasUri);
+        const blobService = new BlockBlobClient(data.sasUrl);
         try {
             const fileBuffer = await file.arrayBuffer();
             await blobService.uploadData(fileBuffer);
+            await createImage.mutateAsync({ url: data.imageUrl });
 
-            createImage.mutate({ name: file.name });
+            return createImage.data;
         } catch (error) {
             toast({
                 variant: "destructive",
@@ -45,5 +46,5 @@ export const useFileUpload = () => {
         }
     }
 
-    return { uploadedFile, setUploadedFile, sasUri, uploadFile };
+    return { uploadedFile, setUploadedFile, uploadFile };
 };

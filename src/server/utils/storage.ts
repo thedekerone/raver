@@ -42,15 +42,5 @@ export async function generateUpdateSasUrl(fileName: string) {
         protocol: SASProtocol.HttpsAndHttp,
     });
 
-    return accountSasTokenUrl;
-}
-
-export function getPublicImageUrl(name: string) {
-    if (!accountName || !accountKey)
-        throw new Error("Failed to initialize Azure storage");
-
-    const blobServiceClient = getBlobServiceClient(accountName, accountKey);
-    const containerClient = blobServiceClient.getContainerClient(containerName);
-
-    return containerClient.getBlockBlobClient(name).url;
+    return { sasUrl: accountSasTokenUrl, imageUrl: blockBlobClient.url };
 }

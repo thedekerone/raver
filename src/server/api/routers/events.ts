@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { getPublicImageUrl } from "~/server/utils/storage";
 import {
     createTRPCRouter,
     protectedProcedure,
@@ -31,8 +30,6 @@ export const eventsRouter = createTRPCRouter({
                 data: {
                     ...input,
                     organiserId: ctx.session.user.id,
-                    bgImageUrl:
-                        input.bgImageUrl && getPublicImageUrl(input.bgImageUrl),
                 },
             });
         }),
