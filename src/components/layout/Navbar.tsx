@@ -17,12 +17,7 @@ export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
         <div className="container mx-auto flex items-center justify-between p-4">
             <Link href={"/"}>
                 <div className="flex items-center justify-between">
-                    <Image
-                        width="50"
-                        height="50"
-                        src="/WhatsApp Image 2023-10-15 at 15.01.46.png"
-                        alt="logo"
-                    />
+                    <Image width="50" height="50" src="/logo.png" alt="logo" />
                 </div>
             </Link>
             <NavigationMenu>
