@@ -84,7 +84,7 @@ const main = async () => {
         startDate.setDate(startDate.getDate() + 30); // Start date 30 days from now
         const endDate = new Date(startDate.getTime() + 6 * 60 * 60 * 1000); // 6 hours later
 
-        await prisma.event.create({
+        const event = await prisma.event.create({
             data: {
                 title: eventInfo.title,
                 description: eventInfo.description,
@@ -98,9 +98,49 @@ const main = async () => {
                 // More fields can be added here if necessary
             },
         });
+
+        await createTicketTypes(event.id);
     }
+
     await prisma.$disconnect();
 };
+
+async function createTicketTypes(eventId: string) {
+    const ticketTypesData = [
+        {
+            name: "General Admission",
+            price: 59.99,
+            quantity: 500,
+            description: "Access to all general areas.",
+        },
+        {
+            name: "VIP Pass",
+            price: 149.99,
+            quantity: 100,
+            description: "VIP access to the event, including premium seating.",
+        },
+        {
+            name: "Group Ticket",
+            price: 199.99,
+            quantity: 50,
+            description: "Discounted rate for groups of 5 or more.",
+        },
+    ];
+
+    for (const ticketType of ticketTypesData) {
+        await prisma.ticketType.create({
+            data: {
+                event: {
+                    connect: { id: eventId },
+                },
+                price: ticketType.price,
+                quantity: ticketType.quantity,
+                name: ticketType.name,
+                description: ticketType.description,
+            },
+        });
+    }
+}
 
 main().catch((e) => {
     console.error(e);
