@@ -16,8 +16,8 @@ model Event {
   id                String       @id @default(cuid())
   title             String
   description       String
-  organiser         User?         @relation(fields: [organiserId], references: [id], name: "eventOrganiser")
-  organiserId       String?
+  organiser         User         @relation(fields: [organiserId], references: [id], name: "eventOrganiser")
+  organiserId       String
   attendees         User[]       @relation("eventAttendees")
   Marketing         Marketing?   @relation(fields: [marketingId], references: [id])
   marketingId       String?
@@ -30,7 +30,7 @@ model Event {
   ticketTypes       TicketType[]
   bgImageUrl        String?
   thumbnailImageUrl String?
-  User              User[]
+  tickets           Ticket[]
 }
 
 model Marketing {
@@ -92,7 +92,12 @@ model Ticket {
   ticketTypeId String
   user         User       @relation(fields: [userId], references: [id])
   userId       String
+  event        Event      @relation(fields: [eventId], references: [id])
+  eventId      String
   name         String?
+  isValid      Boolean?   @default(true)
+  hasMultipleUses Boolean? @default(false)
+  uses         Int    @default(0)
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @default(now())
 }
@@ -135,7 +140,6 @@ model User {
   updatedAt       DateTime  @default(now())
   organisedEvents Event[]   @relation("eventOrganiser")
   attendingEvents Event[]   @relation("eventAttendees")
-  event           Event?    @relation(fields: [eventId], references: [id])
   eventId         String?
   tickets         Ticket[]
   accounts        Account[]
