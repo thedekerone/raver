@@ -22,7 +22,14 @@ export const ticketsRouter = createTRPCRouter({
                 data: {
                     ticketTypeId: input.ticketTypeId,
                     userId: ctx.session.user.id,
+                    eventId: input.eventId,
                 },
             });
         }),
+    list: protectedProcedure.query(async ({ ctx }) => {
+        return ctx.db.ticket.findMany({
+            where: { userId: ctx.session.user.id },
+            include: { ticketType: { include: { event: true } } },
+        });
+    }),
 });

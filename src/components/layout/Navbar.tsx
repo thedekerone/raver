@@ -4,7 +4,7 @@ import {
     NavigationMenuItem,
     NavigationMenuLink,
 } from "@radix-ui/react-navigation-menu";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Button } from "../ui/button";
 import { navigationMenuTriggerStyle } from "../ui/navigation-menu";
 import Image from "next/image";
@@ -12,7 +12,9 @@ import Link from "next/link";
 
 import LoginModal from "../LoginModal";
 
-export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
+export function Navbar() {
+    const { data: session } = useSession();
+    const isLoggedIn = Boolean(session?.user);
     return (
         <div className="container mx-auto flex items-center justify-between p-4">
             <Link href={"/"}>
@@ -22,7 +24,7 @@ export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
             </Link>
             <NavigationMenu>
                 <NavigationMenuList className="flex items-center">
-                    <NavigationMenuItem>
+                    <NavigationMenuItem hidden={!isLoggedIn}>
                         <Link href="/tickets" legacyBehavior passHref>
                             <NavigationMenuLink
                                 className={navigationMenuTriggerStyle()}
@@ -32,7 +34,7 @@ export function Navbar({ isLoggedIn }: { isLoggedIn: boolean }) {
                         </Link>
                     </NavigationMenuItem>
 
-                    <NavigationMenuItem>
+                    <NavigationMenuItem hidden={!isLoggedIn}>
                         <Link
                             href="/admin/events/create"
                             legacyBehavior

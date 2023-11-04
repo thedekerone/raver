@@ -1,24 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import { type TicketType, type Event } from "@prisma/client";
 import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 import Image from "next/image";
-import { Button } from "~/components/ui/button";
 import { BsFacebook, BsTwitter, BsTwitch } from "react-icons/bs";
 import { api } from "~/server/utils/api";
 import { useToast } from "~/components/ui/use-toast";
-import { ReloadIcon } from "@radix-ui/react-icons";
-
+import EventsDetailsTicket from "./ticket/EventDetailsTicket";
 type Props = {
     eventItem: Event & { ticketTypes: TicketType[] };
 };
 
 export default function EventsDetails({
-    eventItem: { title, description, ticketTypes, bgImageUrl, id },
+    eventItem: { title, description, ticketTypes, bgImageUrl, id: eventId },
 }: Props) {
     const { toast } = useToast();
-    const [loading, setLoading] = useState(false);
 
-    const buyTicket = api.tickets.create.useMutation({
+    const createTicket = api.tickets.create.useMutation({
         onError: (error) => {
             toast({
                 variant: "destructive",
@@ -26,20 +23,18 @@ export default function EventsDetails({
                 description: error.message,
             });
         },
-
-        onMutate: () => {
-            setLoading(true);
-        },
         onSuccess: () => {
             toast({
                 description: "Ticket purchased successfully",
             });
-            setLoading(false);
         },
     });
 
-    function handleTicketPurchase(ticketTypeId: string) {
-        buyTicket.mutate({ eventId: id, ticketTypeId: ticketTypeId });
+    async function buyTicket(ticketTypeId: string) {
+        await createTicket.mutateAsync({
+            eventId: eventId,
+            ticketTypeId: ticketTypeId,
+        });
     }
 
     return (
@@ -90,33 +85,18 @@ export default function EventsDetails({
                 </div>
             </div>
 
-            <div className="container mt-7 max-w-lg ">
-                {ticketTypes.map((ticketType) => {
+            <ul className="container mt-7 max-w-lg ">
+                {ticketTypes.map((ticketType: TicketType) => {
                     return (
-                        <div
-                            key={ticketType.id}
-                            className="flex items-center justify-between rounded border p-3"
-                        >
-                            <span>{ticketType.name}</span>
-                            <Button
-                                onClick={() =>
-                                    handleTicketPurchase(ticketType.id)
-                                }
-                                className="h-8 text-xs"
-                            >
-                                {loading ? (
-                                    <>
-                                        <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />{" "}
-                                        Loading
-                                    </>
-                                ) : (
-                                    "Buy"
-                                )}
-                            </Button>
-                        </div>
+                        <li key={ticketType.id}>
+                            <EventsDetailsTicket
+                                ticketType={ticketType}
+                                buyTicket={buyTicket}
+                            />
+                        </li>
                     );
                 })}
-            </div>
+            </ul>
 
             <div className="container mt-10">
                 <AspectRatio ratio={5 / 2} className="w-full">

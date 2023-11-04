@@ -14,7 +14,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
     return (
         <SessionProvider session={session}>
-            <Navbar isLoggedIn={Boolean(session?.user.id)} />
+            <Navbar />
             <Component {...pageProps} />
             <div id="modals" />
             <Toaster />
