@@ -1,11 +1,12 @@
-import { type Event } from "@prisma/client";
+import { type Event, type EventCategory } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
 import { AspectRatio } from "./ui/aspect-ratio";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import Link from "next/link";
+import { Badge } from "./ui/badge";
 
-type Props = { events: Event[] };
+type Props = { events: (Event & { categories: EventCategory[] })[] };
 
 export default function EventDisplayer({ events }: Props) {
     return (
@@ -34,6 +35,11 @@ export default function EventDisplayer({ events }: Props) {
                             </Link>
                         </CardTitle>
                         <CardDescription>
+                            {eventItem?.categories?.map((category) => (
+                                <div key={category.id}>
+                                    <Badge>{category.name}</Badge>
+                                </div>
+                            ))}
                             {eventItem.description}
                         </CardDescription>
                     </CardHeader>
