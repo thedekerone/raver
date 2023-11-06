@@ -10,13 +10,13 @@ type Props = { events: (Event & { categories: EventCategory[] })[] };
 
 export default function EventDisplayer({ events }: Props) {
     return (
-        <div className="grid grid-cols-4 gap-4	">
+        <div className="grid grid-cols-4 gap-7">
             {events.map((eventItem) => (
                 <Card
                     key={eventItem.id}
-                    className="container-sm overflow-hidden"
+                    className="container-sm cursor-pointer overflow-hidden transition duration-300 ease-out  hover:drop-shadow-lg"
                 >
-                    <AspectRatio ratio={16 / 9} className="bg-muted">
+                    <AspectRatio ratio={2 / 1} className="bg-muted">
                         <Image
                             fill
                             objectFit="cover"
@@ -28,8 +28,8 @@ export default function EventDisplayer({ events }: Props) {
                         />
                     </AspectRatio>
 
-                    <CardHeader>
-                        <CardTitle>
+                    <CardHeader className="px-3 py-3">
+                        <CardTitle className="text-lg">
                             <Link href={`events/${eventItem.id}`}>
                                 {eventItem.title}
                             </Link>
