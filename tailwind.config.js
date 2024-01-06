@@ -16,38 +16,39 @@ module.exports = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        // Keeping text colors normal
+        border: "hsl(210, 30%, 88%)",
+        input: "hsl(200, 30%, 92%)",
+        ring: "hsl(180, 30%, 85%)",
+        background: "hsl(240, 10%, 98%)",
+        foreground: "hsl(240, 5%, 20%)", // Normal text color
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "hsl(340, 70%, 60%)",
+          foreground: "hsl(340, 10%, 20%)", // Normal text color
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "hsl(50, 70%, 65%)",
+          foreground: "hsl(50, 10%, 20%)", // Normal text color
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "hsl(0, 60%, 65%)",
+          foreground: "hsl(0, 10%, 20%)", // Normal text color
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "hsl(220, 15%, 70%)",
+          foreground: "hsl(220, 5%, 20%)", // Normal text color
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "hsl(290, 60%, 75%)",
+          foreground: "hsl(290, 10%, 20%)", // Normal text color
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "hsl(60, 60%, 85%)",
+          foreground: "hsl(60, 10%, 20%)", // Normal text color
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "hsl(200, 25%, 90%)",
+          foreground: "hsl(200, 5%, 20%)", // Normal text color
         },
       },
       borderRadius: {
@@ -64,6 +65,10 @@ module.exports = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: 0 },
         },
+        "infinite-scroll": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-100%)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -71,14 +76,8 @@ module.exports = {
         "infinite-scroll": "infinite-scroll 25s linear infinite",
         "infinite-scroll-reverse": "infinite-scroll 25s linear infinite reverse",
       },
-      keyframes: {
-        "infinite-scroll": {
-          from: { transform: "translateX(0)" },
-          to: { transform: "translateX(-100%)" },
-        },
-
-      },
     },
   },
   plugins: [require("tailwindcss-animate")],
 };
+
