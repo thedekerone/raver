@@ -6,7 +6,7 @@ export default function EventsPage() {
     if (!events) return "loading";
     return (
         <div className="container">
-            <EventDisplayer events={events} />;
+            <EventDisplayer events={events} />
         </div>
     );
 }
