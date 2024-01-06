@@ -19,7 +19,7 @@ export default function TicketDetailsModal() {
                     <DialogHeader>
                         <DialogTitle>Ticket Information</DialogTitle>
                         <DialogDescription>
-                            detailed information about tickets
+                            Detailed information about tickets
                         </DialogDescription>
                     </DialogHeader>
                 </DialogContent>
