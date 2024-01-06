@@ -5,48 +5,48 @@ const events = [
     {
         title: "Helsinki Tech Symposium",
         bgImageUrl:
-            "https://dekker2.blob.core.windows.net/events/16702606285857.jpg",
+            "https://firebasestorage.googleapis.com/v0/b/raver-3aec7.appspot.com/o/5a6bccf8ff846b0001f03994_FeaturedImage48.jpg?alt=media&token=563a477b-a7f2-4c33-bbd8-66b0b0c7210b",
         description:
             "A gathering of the brightest minds in the Helsinki tech scene.",
     },
     {
         title: "Cloud Infrastructure Conference",
         bgImageUrl:
-            "https://dekker2.blob.core.windows.net/events/462ca7fc-e597-46e7-be52-bfec3e79bdc3-file",
+            "https://firebasestorage.googleapis.com/v0/b/raver-3aec7.appspot.com/o/closing-parties-ibiza-2018.jpg?alt=media&token=0f11aa2e-c6ec-4729-9283-9d3d4db223e7",
         description: "Explore the future of cloud infrastructure and services.",
     },
     {
         title: "Holi Festival of Colors",
         bgImageUrl:
-            "https://dekker2.blob.core.windows.net/events/720666eda63498b03a2d7c001Hero-Holi-Festival-India (1).jpg",
+            "https://firebasestorage.googleapis.com/v0/b/raver-3aec7.appspot.com/o/d1c51649-cd92-4a82-859e-dba7687262b2.sized-1000x1000.jpeg?alt=media&token=539f51ba-54c3-4f3e-9171-965e81096f70",
         description:
             "Celebrate the festival of colors with music, dance, and festivities.",
     },
     {
         title: "Indie Game Developers Meetup",
         bgImageUrl:
-            "https://dekker2.blob.core.windows.net/events/720666eda63498b03a2d7c005Makanaky.jpg",
+            "https://firebasestorage.googleapis.com/v0/b/raver-3aec7.appspot.com/o/download%20(1).jpeg?alt=media&token=1334bd24-365f-44d3-a978-4fe637d0d226",
         description:
             "Join fellow game developers to showcase and discuss indie games.",
     },
     {
         title: "Mighty Hoopla Music Festival",
         bgImageUrl:
-            "https://dekker2.blob.core.windows.net/events/Mighty-Hoopla-1-1466x854.jpg",
+            "https://firebasestorage.googleapis.com/v0/b/raver-3aec7.appspot.com/o/images.jpeg?alt=media&token=f0dbf39a-7ae0-4a11-85c8-39880b118f2a",
         description:
             "The most inclusive and fabulous pop festival in Helsinki.",
     },
     {
         title: "Weekend Festival 2023",
         bgImageUrl:
-            "https://dekker2.blob.core.windows.net/events/WKND23_Day2_224704_HeikkiSalonen_-1-e1691271395858.jpg",
+            "https://firebasestorage.googleapis.com/v0/b/raver-3aec7.appspot.com/o/pim-myten-m41k1lTzjVM-unsplash(1).jpg?alt=media&token=94eec4aa-7062-4e06-bca4-730af14251c4",
         description:
             "Experience the best of electronic music over an unforgettable weekend.",
     },
     {
         title: "Photography Workshop",
         bgImageUrl:
-            "https://dekker2.blob.core.windows.net/events/a5d067d211bb37d54b3946a12a5d067d211bb37d54b3946a08a0271772917_2.jpg",
+            "https://firebasestorage.googleapis.com/v0/b/raver-3aec7.appspot.com/o/4-parties.jpg?alt=media&token=668ffb55-bbff-4618-8f45-7ece0dff9396",
         description:
             "Learn the art of photography from experienced professionals.",
     },

@@ -6,19 +6,25 @@ await import("./src/env.mjs");
 
 /** @type {import("next").NextConfig} */
 const config = {
-  reactStrictMode: true,
-  images: {
-    domains: ["www.publimetro.pe", "dekker2.blob.core.windows.net", "media.traveler.es", "localhost "],
-  },
-  /**
-   * If you are using `appDir` then you must comment the below `i18n` config out.
-   *
-   * @see https://github.com/vercel/next.js/issues/41980
-   */
-  i18n: {
-    locales: ["en"],
-    defaultLocale: "en",
-  },
+    reactStrictMode: true,
+    images: {
+        domains: [
+            "firebasestorage.googleapis.com",
+            "www.publimetro.pe",
+            "dekker2.blob.core.windows.net",
+            "media.traveler.es",
+            "localhost",
+        ],
+    },
+    /**
+     * If you are using `appDir` then you must comment the below `i18n` config out.
+     *
+     * @see https://github.com/vercel/next.js/issues/41980
+     */
+    i18n: {
+        locales: ["en"],
+        defaultLocale: "en",
+    },
 };
 
 export default config;
