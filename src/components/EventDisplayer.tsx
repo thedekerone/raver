@@ -1,4 +1,4 @@
-import { type Event, type EventCategory } from "@prisma/client";
+import { type EventCategory, type Event } from "@prisma/client";
 import Image from "next/image";
 import React from "react";
 import { AspectRatio } from "./ui/aspect-ratio";

@@ -35,8 +35,8 @@ export default function Home() {
                                 alt: el.title,
                             }))
                             .slice(1, 7)}
-                    ></Carousel>
-                    <div className="my-2"></div>
+                    />
+                    <div className="my-2" />
                     <Carousel
                         reverse={true}
                         images={events
@@ -45,20 +45,18 @@ export default function Home() {
                                 alt: el.title,
                             }))
                             .slice(1, 7)}
-                    ></Carousel>
+                    />
                 </>
             )}
 
             <div className="container mb-7">
                 <h2 className="mb-3 font-semibold">Upcoming Events</h2>
-                {upcomingEvents && (
-                    <EventDisplayer events={upcomingEvents}></EventDisplayer>
-                )}
+                {upcomingEvents && <EventDisplayer events={upcomingEvents} />}
             </div>
 
             <div className="container">
                 <h2 className="mb-3 font-semibold">All events</h2>
-                {events && <EventDisplayer events={events}></EventDisplayer>}
+                {events && <EventDisplayer events={events} />}
             </div>
         </>
     );

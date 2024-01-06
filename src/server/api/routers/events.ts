@@ -47,6 +47,7 @@ export const eventsRouter = createTRPCRouter({
             },
             include: {
                 ticketTypes: true,
+                categories: true,
             },
         });
     }),
