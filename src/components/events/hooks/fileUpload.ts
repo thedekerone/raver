@@ -2,10 +2,13 @@ import { BlockBlobClient } from "@azure/storage-blob";
 import { useState } from "react";
 import { useToast } from "~/components/ui/use-toast";
 import { api } from "~/server/utils/api";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import firebase from "~/lib/firebase";
 
 export const useFileUpload = () => {
     const { toast } = useToast();
     const [uploadedFile, setUploadedFile] = useState<File | undefined>();
+    const storage = getStorage(firebase);
 
     const createImage = api.images.create.useMutation({
         onError: () => {
@@ -27,7 +30,24 @@ export const useFileUpload = () => {
         { enabled: !!uploadedFile?.name },
     ).data;
 
-    async function uploadFile(file: File) {
+    async function uploadFileFirebase(file: File) {
+        const fileRef = ref(storage, file.name);
+
+        try {
+            const fileUploaded = await uploadBytes(fileRef, file);
+            const url = await getDownloadURL(fileUploaded.ref);
+            await createImage.mutateAsync({ url });
+
+            return createImage.data;
+        } catch (error) {
+            toast({
+                variant: "destructive",
+                description: "Failed to create image",
+            });
+        }
+    }
+
+    async function uploadFileAzure(file: File) {
         if (!data?.sasUrl) {
             throw new Error("Storage not found");
         }
@@ -46,5 +66,10 @@ export const useFileUpload = () => {
         }
     }
 
-    return { uploadedFile, setUploadedFile, uploadFile };
+    return {
+        uploadedFile,
+        setUploadedFile,
+        uploadFile: uploadFileFirebase,
+        secondaryUpload: uploadFileAzure,
+    };
 };

@@ -13,7 +13,7 @@ const config = {
             "www.publimetro.pe",
             "dekker2.blob.core.windows.net",
             "media.traveler.es",
-            "localhost ",
+            "localhost",
         ],
     },
     /**
