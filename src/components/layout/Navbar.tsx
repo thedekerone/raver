@@ -34,6 +34,15 @@ export function Navbar() {
                         </Link>
                     </NavigationMenuItem>
 
+                    <NavigationMenuItem>
+                        <Link href="/events" legacyBehavior passHref>
+                            <NavigationMenuLink
+                                className={navigationMenuTriggerStyle()}
+                            >
+                                Events
+                            </NavigationMenuLink>
+                        </Link>
+                    </NavigationMenuItem>
                     <NavigationMenuItem hidden={!isLoggedIn}>
                         <Link
                             href="/admin/events/create"
@@ -43,7 +52,7 @@ export function Navbar() {
                             <NavigationMenuLink
                                 className={navigationMenuTriggerStyle()}
                             >
-                                create event
+                                Create
                             </NavigationMenuLink>
                         </Link>
                     </NavigationMenuItem>

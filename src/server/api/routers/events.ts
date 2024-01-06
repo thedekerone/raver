@@ -10,6 +10,7 @@ export const eventsRouter = createTRPCRouter({
         return await ctx.db.event.findMany({
             include: {
                 ticketTypes: true,
+                categories: true,
             },
         });
     }),

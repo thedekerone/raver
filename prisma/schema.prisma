@@ -31,6 +31,14 @@ model Event {
   bgImageUrl        String?
   thumbnailImageUrl String?
   tickets           Ticket[]
+  categories        EventCategory[]
+}
+
+model EventCategory {
+  id                String        @id @default(cuid())
+  name              String 
+  description       String?
+  events            Event[]
 }
 
 model Marketing {
